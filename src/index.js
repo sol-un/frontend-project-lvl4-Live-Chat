@@ -1,17 +1,21 @@
-// @ts-check
-
+/* eslint-disable react/jsx-filename-extension */
+import React from 'react';
+import ReactDOM from 'react-dom';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-
 import '../assets/application.scss';
-// @ts-ignore
-// eslint-disable-next-line import/no-unresolved
-import gon from 'gon';
-import app from './App.jsx';
+import { Provider } from 'react-redux';
+import App from './components/App.jsx';
+import store from './store';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
 const container = document.querySelector('#chat');
-app(container, gon);
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  container,
+);
