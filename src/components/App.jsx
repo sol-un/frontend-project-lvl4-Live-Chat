@@ -3,15 +3,14 @@ import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
-import { fetchMessages } from '../slices/messagesSlice.js';
+import { fetchMessages, addMessage } from '../slices/messagesSlice.js';
 
 const socket = io();
 
 const App = () => {
   const dispatch = useDispatch();
   socket.on('newMessage', ({ data }) => {
-    const { attributes } = data;
-    dispatch(fetchMessages(attributes.channelId));
+    dispatch(addMessage(data));
   });
   return (
     <>

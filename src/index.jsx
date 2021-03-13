@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 const provideUserName = () => {
   let userName = Cookies.get('hexletChatUserName');
   if (!userName) {
-    userName = faker.fake('{{hacker.adjective}}{{hacker.noun}}{{random.number}}');
+    userName = faker.fake('{{commerce.productAdjective}}-{{random.word}}-{{random.number}}').toLowerCase();
     Cookies.set('hexletChatUserName', userName);
   }
   return userName;
