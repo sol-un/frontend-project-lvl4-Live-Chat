@@ -5,16 +5,13 @@ import routes from '../routes.js';
 export const createMessage = createAsyncThunk(
   'messages/create',
   // eslint-disable-next-line no-unused-vars
-  async ({ text, currentChannelId, userName }, thunkAPI) => {
-    const response = await axios({
-      method: 'post',
-      url: routes.channelMessagesPath(currentChannelId),
-      data: {
-        data: { attributes: { text, userName } },
-      },
-    });
-    return response.data;
-  },
+  async ({ text, userName, currentChannelId }, thunkAPI) => axios({
+    method: 'post',
+    url: routes.channelMessagesPath(currentChannelId),
+    data: {
+      data: { attributes: { text, userName } },
+    },
+  }),
 );
 
 const messagesSlice = createSlice({
@@ -28,6 +25,7 @@ const messagesSlice = createSlice({
   },
   extraReducers: {
     [createMessage.fulfilled]: () => console.log('Message created!'),
+    [createMessage.rejected]: (_state, action) => console.log(action.error),
   },
 });
 
