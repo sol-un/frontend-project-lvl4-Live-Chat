@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { unionBy } from 'lodash';
 import routes from '../routes.js';
 
 export const createMessage = createAsyncThunk(

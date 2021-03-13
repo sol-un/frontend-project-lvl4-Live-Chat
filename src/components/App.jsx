@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
-import { fetchMessages, addMessage } from '../slices/messagesSlice.js';
+import { addMessage } from '../slices/messagesSlice.js';
 
 const socket = io();
 
