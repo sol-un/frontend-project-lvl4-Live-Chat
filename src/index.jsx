@@ -7,12 +7,24 @@ import '../assets/application.scss';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import gon from 'gon';
+import Cookies from 'js-cookie';
+import faker from 'faker';
 import App from './components/App.jsx';
+import AppContext from './app-context.js';
 import { channelsReducer, messagesReducer, currentChannelIdReducer } from './slices/index.js';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
+
+const provideUserName = () => {
+  let userName = Cookies.get('hexletChatUserName');
+  if (!userName) {
+    userName = faker.fake('{{hacker.adjective}}{{hacker.noun}}{{random.number}}');
+    Cookies.set('hexletChatUserName', userName);
+  }
+  return userName;
+};
 
 const store = configureStore({
   reducer: {
@@ -26,7 +38,9 @@ const store = configureStore({
 const container = document.querySelector('#chat');
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <AppContext.Provider value={provideUserName()}>
+      <App />
+    </AppContext.Provider>
   </Provider>,
   container,
 );

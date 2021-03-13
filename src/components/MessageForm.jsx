@@ -5,10 +5,12 @@ import {
 } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { createMessage } from '../slices/messagesSlice.js';
+import AppContext from '../app-context.js';
 
 const MessageForm = () => {
   const dispatch = useDispatch();
   const currentChannelId = useSelector((state) => state.currentChannelId);
+  const userName = React.useContext(AppContext);
   return (
     <Formik
       initialValues={{ message: '' }}
@@ -21,7 +23,7 @@ const MessageForm = () => {
       }}
       validateOnBlur={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        dispatch(createMessage({ text: values.message, currentChannelId }));
+        dispatch(createMessage({ text: values.message, currentChannelId, userName }));
         setSubmitting(false);
         resetForm();
       }}

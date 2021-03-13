@@ -6,12 +6,12 @@ import routes from '../routes.js';
 export const createMessage = createAsyncThunk(
   'messages/create',
   // eslint-disable-next-line no-unused-vars
-  async ({ text, currentChannelId }, thunkAPI) => {
+  async ({ text, currentChannelId, userName }, thunkAPI) => {
     const response = await axios({
       method: 'post',
       url: routes.channelMessagesPath(currentChannelId),
       data: {
-        data: { attributes: { text } },
+        data: { attributes: { text, userName } },
       },
     });
     return response.data;
