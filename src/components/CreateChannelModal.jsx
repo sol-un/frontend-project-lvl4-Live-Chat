@@ -85,9 +85,9 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
                     </Form.Text>
                   )}
                   {isNetworkError && (
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Text className="text-danger">
                       Network error!
-                    </Form.Control.Feedback>
+                    </Form.Text>
                   )}
                   {isValid && !isNetworkError && (
                     <div className="d-block">

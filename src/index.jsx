@@ -9,6 +9,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import gon from 'gon';
 import Cookies from 'js-cookie';
 import faker from 'faker';
+import { kebabCase } from 'lodash';
 import App from './components/App.jsx';
 import AppContext from './app-context.js';
 import { channelsReducer, messagesReducer, currentChannelIdReducer } from './slices/index.js';
@@ -20,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 const provideUserName = () => {
   let userName = Cookies.get('hexletChatUserName');
   if (!userName) {
-    userName = faker.fake('{{commerce.color}}-{{random.word}}-{{random.number}}').toLowerCase();
+    userName = kebabCase(faker.fake('{{commerce.color}}-{{random.word}}-{{random.number}}'));
     Cookies.set('hexletChatUserName', userName);
   }
   return userName;

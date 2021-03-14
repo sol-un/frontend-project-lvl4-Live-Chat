@@ -60,9 +60,9 @@ const DeleteChannelModal = ({ show, id, closeCurrentModal }) => {
                     </Button>
                   </InputGroup>
                   {isNetworkError && (
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Text className="text-center text-danger mt-4">
                       Network error!
-                    </Form.Control.Feedback>
+                    </Form.Text>
                   )}
                   {!isNetworkError && (
                     <div className="d-block">

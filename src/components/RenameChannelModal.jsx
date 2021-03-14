@@ -70,7 +70,7 @@ const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
                       id="name"
                       type="text"
                       className="mr-2"
-                      placeholder="Enter channel name..."
+                      placeholder="Enter new channel name..."
                       value={values.name}
                       isInvalid={isNetworkError}
                       onChange={handleChange}
@@ -86,9 +86,9 @@ const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
                     </Form.Text>
                   )}
                   {isNetworkError && (
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Text className="text-danger">
                       Network error!
-                    </Form.Control.Feedback>
+                    </Form.Text>
                   )}
                   {isValid && !isNetworkError && (
                     <div className="d-block">
