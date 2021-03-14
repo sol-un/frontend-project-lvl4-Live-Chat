@@ -1,14 +1,34 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import routes from '../routes.js';
+
+export const createChannel = createAsyncThunk(
+  'channels/create',
+  // eslint-disable-next-line no-unused-vars
+  async ({ name }, thunkAPI) => axios({
+    method: 'post',
+    url: routes.channelsPath(),
+    data: {
+      data: { attributes: { name } },
+    },
+  }),
+);
 
 const channelsSlice = createSlice({
   name: 'channels',
   initialState: [],
-  reducers: {},
+  reducers: {
+    addChannel(state, action) {
+      const { payload } = action;
+      state.push(payload.attributes);
+    },
+  },
+  extraReducers: {
+    [createChannel.fulfilled]: () => console.log('Channel created!'),
+    [createChannel.rejected]: (_state, action) => console.log(action.error),
+  },
 });
 
-// Extract the action creators object and the reducer
 const { actions, reducer } = channelsSlice;
-// Extract and export each action creator by name
-export const { createPost, updatePost, deletePost } = actions;
-// Export the reducer, either as a default or named export
+export const { addChannel } = actions;
 export default reducer;

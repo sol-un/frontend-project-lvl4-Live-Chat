@@ -23,7 +23,7 @@ const ChannelNav = () => {
         <button type="button" className="btn btn-link ml-auto p-0" onClick={handleNewChannelModal}>+</button>
       </div>
       <Nav variant="pills" className="flex-column nav-fill" as="ul">
-        {channels.map(({ id, name }) => (
+        {channels.map(({ id, name, removable }) => (
           <Nav.Item
             key={id}
             onClick={handleCurrentChannelChange(id)}

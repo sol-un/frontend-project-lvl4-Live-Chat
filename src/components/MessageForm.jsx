@@ -52,38 +52,40 @@ const MessageForm = () => {
         } = props;
         const isNetworkError = status.networkError;
         return (
-          <div className="mt-auto">
-
-            <Form onSubmit={handleSubmit}>
-              <Form.Group>
-                <InputGroup>
-                  <Form.Label htmlFor="message" srOnly>Your message</Form.Label>
-                  <Form.Control
-                    id="message"
-                    type="text"
-                    className="mr-2"
-                    value={values.message}
-                    isInvalid={isNetworkError}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  {!isValid && (
-                    <Form.Text className="text-muted">
-                      {errors.message}
-                    </Form.Text>
-                  )}
-                  {isNetworkError && (
-                    <Form.Control.Feedback type="invalid">
-                      Network error!
-                    </Form.Control.Feedback>
-                  )}
-                  <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
-                    Submit
-                  </Button>
-                </InputGroup>
-              </Form.Group>
-            </Form>
-          </div>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <InputGroup>
+                <Form.Label htmlFor="message" srOnly>Your message</Form.Label>
+                <Form.Control
+                  id="message"
+                  type="text"
+                  className="mr-2"
+                  value={values.message}
+                  isInvalid={isNetworkError}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
+                  Submit
+                </Button>
+              </InputGroup>
+              {!isValid && (
+                <Form.Text className="text-muted">
+                  {errors.message}
+                </Form.Text>
+              )}
+              {isNetworkError && (
+                <Form.Control.Feedback type="invalid">
+                  Network error!
+                </Form.Control.Feedback>
+              )}
+              {isValid && !isNetworkError && (
+                <div className="d-block">
+                  &nbsp;
+                </div>
+              )}
+            </Form.Group>
+          </Form>
         );
       }}
     </Formik>

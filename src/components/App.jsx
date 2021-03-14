@@ -8,6 +8,7 @@ import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 import { addMessage } from '../slices/messagesSlice.js';
+import { addChannel } from '../slices/channelsSlice.js';
 
 const socket = io();
 
@@ -16,12 +17,15 @@ const App = () => {
   socket.on('newMessage', ({ data }) => {
     dispatch(addMessage(data));
   });
+  socket.on('newChannel', ({ data }) => {
+    dispatch(addChannel(data));
+  });
   return (
     <Row className="h-100 pb-3">
       <Col className="border-right" xs={3}>
         <ChannelNav />
       </Col>
-      <Col className="d-flex flex-column h-100">
+      <Col className="d-flex flex-column justify-content-end h-100">
         <Messages />
         <MessageForm />
       </Col>
