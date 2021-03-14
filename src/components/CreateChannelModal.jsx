@@ -8,25 +8,27 @@ import { Formik } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { createChannel } from '../slices/channelsSlice.js';
 
-const NewChannelModal = ({ show, onHide }) => {
+const CreateChannelModal = ({ show, closeCurrentModal }) => {
+  const inputField = React.useRef(null);
   const dispatch = useDispatch();
   return (
     <Modal
       show={show}
-      onHide={onHide}
+      onEntered={() => inputField.current.focus()}
+      onHide={closeCurrentModal}
     >
       <Modal.Header>
         <Modal.Title>
-          Add channel
+          New channel
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Formik
-          initialValues={{ channelName: '' }}
+          initialValues={{ name: '' }}
           initialStatus={{ networkError: false }}
           validate={(values) => {
             const errors = {};
-            if (values.channelName.length < 1) {
+            if (values.name.length < 1) {
               errors.message = 'Channel name can\'t be empty!';
             }
             return errors;
@@ -34,47 +36,47 @@ const NewChannelModal = ({ show, onHide }) => {
           validateOnBlur={false}
           onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
             dispatch(createChannel({
-              name: values.channelName,
+              name: values.name,
             }))
               .then(unwrapResult)
               .then(() => {
                 setStatus({ networkError: false });
                 resetForm();
-                onHide();
+                closeCurrentModal();
               })
               .catch(() => setStatus({ networkError: true }))
               .finally(() => setSubmitting(false));
           }}
         >
-          {(props) => {
-            const {
-              values,
-              errors,
-              status,
-              isSubmitting,
-              isValid,
-              handleChange,
-              handleSubmit,
-              handleBlur,
-            } = props;
+          {({
+            values,
+            errors,
+            status,
+            isSubmitting,
+            isValid,
+            handleChange,
+            handleSubmit,
+            handleBlur,
+          }) => {
             const isNetworkError = status.networkError;
             return (
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <InputGroup>
-                    <Form.Label htmlFor="channelName" srOnly>Channel name</Form.Label>
+                    <Form.Label htmlFor="name" srOnly>Channel name</Form.Label>
                     <Form.Control
-                      id="channelName"
+                      ref={inputField}
+                      id="name"
                       type="text"
                       className="mr-2"
                       placeholder="Enter channel name..."
-                      value={values.channelName}
+                      value={values.name}
                       isInvalid={isNetworkError}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
                     <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
-                      Submit
+                      Create
                     </Button>
                   </InputGroup>
                   {!isValid && (
@@ -102,9 +104,9 @@ const NewChannelModal = ({ show, onHide }) => {
   );
 };
 
-NewChannelModal.propTypes = {
+CreateChannelModal.propTypes = {
   show: PropTypes.bool.isRequired,
-  onHide: PropTypes.func.isRequired,
+  closeCurrentModal: PropTypes.func.isRequired,
 };
 
-export default NewChannelModal;
+export default CreateChannelModal;

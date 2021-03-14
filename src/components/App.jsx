@@ -8,18 +8,26 @@ import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 import { addMessage } from '../slices/messagesSlice.js';
-import { addChannel } from '../slices/channelsSlice.js';
+import { addChannel, renameChannel, removeChannel } from '../slices/channelsSlice.js';
 
 const socket = io();
 
 const App = () => {
   const dispatch = useDispatch();
+
   socket.on('newMessage', ({ data }) => {
     dispatch(addMessage(data));
   });
   socket.on('newChannel', ({ data }) => {
     dispatch(addChannel(data));
   });
+  socket.on('renameChannel', ({ data }) => {
+    dispatch(renameChannel(data));
+  });
+  socket.on('removeChannel', ({ data }) => {
+    dispatch(removeChannel(data));
+  });
+
   return (
     <Row className="h-100 pb-3">
       <Col className="border-right" xs={3}>
