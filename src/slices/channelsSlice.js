@@ -3,11 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const channelsSlice = createSlice({
   name: 'channels',
   initialState: [],
-  reducers: {
-    createChannel(state, action) {},
-    updateChannel(state, action) {},
-    deleteChannel(state, action) {},
-  },
+  reducers: {},
 });
 
 // Extract the action creators object and the reducer

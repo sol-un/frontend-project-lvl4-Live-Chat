@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Form, Button, Row, Col,
+  Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -52,21 +52,18 @@ const MessageForm = () => {
         } = props;
         const isNetworkError = status.networkError;
         return (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Row>
-                <Col>
-                  <Form.Label htmlFor="message">Your message:</Form.Label>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
+          <div className="mt-auto">
+
+            <Form onSubmit={handleSubmit}>
+              <Form.Group>
+                <InputGroup>
+                  <Form.Label htmlFor="message" srOnly>Your message</Form.Label>
                   <Form.Control
                     id="message"
                     type="text"
+                    className="mr-2"
                     value={values.message}
                     isInvalid={isNetworkError}
-                    placeholder="Enter your message..."
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
@@ -80,15 +77,13 @@ const MessageForm = () => {
                       Network error!
                     </Form.Control.Feedback>
                   )}
-                </Col>
-                <Col>
                   <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
                     Submit
                   </Button>
-                </Col>
-              </Row>
-            </Form.Group>
-          </Form>
+                </InputGroup>
+              </Form.Group>
+            </Form>
+          </div>
         );
       }}
     </Formik>
