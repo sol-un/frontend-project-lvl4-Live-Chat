@@ -1,35 +1,40 @@
+import 'regenerator-runtime/runtime';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { io } from 'socket.io-client';
-import {
-  Row, Col,
-} from 'react-bootstrap';
-import ChannelNav from './ChannelNav.jsx';
-import Messages from './Messages.jsx';
-import MessageForm from './MessageForm.jsx';
-import { addMessage } from '../slices/messagesSlice.js';
-import { addChannel, renameChannel, removeChannel } from '../slices/channelsSlice.js';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-const socket = io();
+import faker from 'faker';
+import { kebabCase } from 'lodash';
+import Cookies from 'js-cookie';
+import Chat from './Chat.jsx';
+import AppContext from '../app-context.js';
+import { channelsReducer, messagesReducer, currentChannelIdReducer } from '../slices/index.js';
 
-const App = () => {
-  const dispatch = useDispatch();
+const createUserName = () => {
+  const userName = kebabCase(faker.fake('{{commerce.color}} {{random.word}} {{random.number}}'));
+  Cookies.set('hexletChatUserName', userName);
+  return userName;
+};
 
-  socket.on('newMessage', ({ data }) => dispatch(addMessage(data)));
-  socket.on('newChannel', ({ data }) => dispatch(addChannel(data)));
-  socket.on('renameChannel', ({ data }) => dispatch(renameChannel(data)));
-  socket.on('removeChannel', ({ data }) => dispatch(removeChannel(data)));
+const provideUserName = () => Cookies.get('hexletChatUserName') || createUserName();
+
+// eslint-disable-next-line react/prop-types
+const App = ({ gon }) => {
+  const store = configureStore({
+    reducer: {
+      channels: channelsReducer,
+      messages: messagesReducer,
+      currentChannelId: currentChannelIdReducer,
+    },
+    preloadedState: gon,
+  });
 
   return (
-    <Row className="h-100 pb-3">
-      <Col className="border-right" xs={3}>
-        <ChannelNav />
-      </Col>
-      <Col className="d-flex flex-column justify-content-end h-100">
-        <Messages />
-        <MessageForm />
-      </Col>
-    </Row>
+    <Provider store={store}>
+      <AppContext.Provider value={provideUserName()}>
+        <Chat />
+      </AppContext.Provider>
+    </Provider>
   );
 };
 
