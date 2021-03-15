@@ -18,14 +18,13 @@ if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-const provideUserName = () => {
-  let userName = Cookies.get('hexletChatUserName');
-  if (!userName) {
-    userName = kebabCase(faker.fake('{{commerce.color}} {{random.word}} {{random.number}}'));
-    Cookies.set('hexletChatUserName', userName);
-  }
+const createUserName = () => {
+  const userName = kebabCase(faker.fake('{{commerce.color}} {{random.word}} {{random.number}}'));
+  Cookies.set('hexletChatUserName', userName);
   return userName;
 };
+
+const provideUserName = () => Cookies.get('hexletChatUserName') || createUserName();
 
 const store = configureStore({
   reducer: {
