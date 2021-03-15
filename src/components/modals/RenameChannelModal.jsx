@@ -104,12 +104,13 @@ const RenameChannelModal = ({
 
 RenameChannelModal.defaultProps = {
   id: null,
+  channelName: '',
 };
 
 RenameChannelModal.propTypes = {
   show: PropTypes.bool.isRequired,
   id: PropTypes.number,
-  channelName: PropTypes.string.isRequired,
+  channelName: PropTypes.string,
   closeCurrentModal: PropTypes.func.isRequired,
 };
 

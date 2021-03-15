@@ -76,12 +76,13 @@ const DeleteChannelModal = ({
 
 DeleteChannelModal.defaultProps = {
   id: null,
+  channelName: '',
 };
 
 DeleteChannelModal.propTypes = {
   show: PropTypes.bool.isRequired,
   id: PropTypes.number,
-  channelName: PropTypes.string.isRequired,
+  channelName: PropTypes.string,
   closeCurrentModal: PropTypes.func.isRequired,
 };
 
