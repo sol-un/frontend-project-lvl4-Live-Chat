@@ -6,9 +6,9 @@ import {
 } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { updateChannelName } from '../slices/channelsSlice.js';
+import { createChannel } from '../../slices/channelsSlice.js';
 
-const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
+const CreateChannelModal = ({ show, closeCurrentModal }) => {
   const inputField = React.useRef(null);
   const dispatch = useDispatch();
   return (
@@ -17,9 +17,9 @@ const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
       onEntered={() => inputField.current.focus()}
       onHide={closeCurrentModal}
     >
-      <Modal.Header>
+      <Modal.Header closeButton>
         <Modal.Title>
-          Rename channel
+          New channel
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -35,18 +35,17 @@ const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
           }}
           validateOnBlur={false}
           onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
-            dispatch(updateChannelName({
+            dispatch(createChannel({
               name: values.name,
-              id,
             }))
               .then(unwrapResult)
-              .then(() => {
-                setStatus({ networkError: false });
-                resetForm();
-                closeCurrentModal();
-              })
+              .then(() => closeCurrentModal())
               .catch(() => setStatus({ networkError: true }))
-              .finally(() => setSubmitting(false));
+              .finally(() => {
+                resetForm();
+                setStatus({ networkError: false });
+                setSubmitting(false);
+              });
           }}
         >
           {({
@@ -70,14 +69,14 @@ const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
                       id="name"
                       type="text"
                       className="mr-2"
-                      placeholder="Enter new channel name..."
+                      placeholder="Enter channel name..."
                       value={values.name}
                       isInvalid={isNetworkError}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
                     <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
-                      Rename
+                      Create
                     </Button>
                   </InputGroup>
                   {!isValid && (
@@ -90,11 +89,6 @@ const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
                       Network error!
                     </Form.Text>
                   )}
-                  {isValid && !isNetworkError && (
-                    <div className="d-block">
-                      &nbsp;
-                    </div>
-                  )}
                 </Form.Group>
               </Form>
             );
@@ -105,14 +99,9 @@ const RenameChannelModal = ({ show, id, closeCurrentModal }) => {
   );
 };
 
-RenameChannelModal.defaultProps = {
-  id: null,
-};
-
-RenameChannelModal.propTypes = {
+CreateChannelModal.propTypes = {
   show: PropTypes.bool.isRequired,
-  id: PropTypes.number,
   closeCurrentModal: PropTypes.func.isRequired,
 };
 
-export default RenameChannelModal;
+export default CreateChannelModal;

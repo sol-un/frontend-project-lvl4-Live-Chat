@@ -80,9 +80,9 @@ const MessageForm = () => {
                 </Form.Text>
               )}
               {isValid && !isNetworkError && (
-                <div className="d-block">
+                <Form.Text>
                   &nbsp;
-                </div>
+                </Form.Text>
               )}
             </Form.Group>
           </Form>

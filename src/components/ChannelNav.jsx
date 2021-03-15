@@ -4,37 +4,49 @@ import {
   Nav, NavLink, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
 import { changeCurrentChannelId } from '../slices/currentChannelIdSlice.js';
-import CreateChannelModal from './CreateChannelModal.jsx';
-import RenameChannelModal from './RenameChannelModal.jsx';
-import DeleteChannelModal from './DeleteChannelModal.jsx';
+import CreateChannelModal from './modals/CreateChannelModal.jsx';
+import RenameChannelModal from './modals/RenameChannelModal.jsx';
+import DeleteChannelModal from './modals/DeleteChannelModal.jsx';
 
 const ChannelNav = () => {
-  const [currentModalData, setCurrentModalData] = React.useState({ name: null, id: null });
+  const [currentModalData, setCurrentModalData] = React.useState({
+    showing: null,
+    id: null,
+    channelName: null,
+  });
   const channels = useSelector((state) => state.channels);
   const currentChannelId = useSelector((state) => state.currentChannelId);
   const dispatch = useDispatch();
 
   const handleCurrentChannelChange = (id) => () => dispatch(changeCurrentChannelId(id));
 
-  const handleNewChannelModal = () => setCurrentModalData({ name: 'new', id: null });
-  const handleRenameChannelModal = (id) => () => setCurrentModalData({ name: 'rename', id });
-  const handleDeleteChannelModal = (id) => () => setCurrentModalData({ name: 'delete', id });
-  const closeCurrentModal = () => setCurrentModalData({ name: null, id: null });
+  const handleNewChannelModal = () => setCurrentModalData((prevState) => ({
+    ...prevState,
+    showing: 'new',
+  }));
+  const handleRenameChannelModal = (id, channelName) => () => setCurrentModalData({ showing: 'rename', id, channelName });
+  const handleDeleteChannelModal = (id, channelName) => () => setCurrentModalData({ showing: 'delete', id, channelName });
+  const closeCurrentModal = () => setCurrentModalData((prevState) => ({
+    ...prevState,
+    showing: null,
+  }));
 
   return (
     <>
       <CreateChannelModal
-        show={currentModalData.name === 'new'}
+        show={currentModalData.showing === 'new'}
         closeCurrentModal={closeCurrentModal}
       />
       <RenameChannelModal
-        show={currentModalData.name === 'rename'}
+        show={currentModalData.showing === 'rename'}
         id={currentModalData.id}
+        channelName={currentModalData.channelName}
         closeCurrentModal={closeCurrentModal}
       />
       <DeleteChannelModal
-        show={currentModalData.name === 'delete'}
+        show={currentModalData.showing === 'delete'}
         id={currentModalData.id}
+        channelName={currentModalData.channelName}
         closeCurrentModal={closeCurrentModal}
       />
       <div className="d-flex mb-2">
@@ -61,8 +73,8 @@ const ChannelNav = () => {
                   id="dropdown-split-basic"
                 />
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={handleRenameChannelModal(id)}>Rename</Dropdown.Item>
-                  <Dropdown.Item onClick={handleDeleteChannelModal(id)}>Remove</Dropdown.Item>
+                  <Dropdown.Item onClick={handleRenameChannelModal(id, name)}>Rename</Dropdown.Item>
+                  <Dropdown.Item onClick={handleDeleteChannelModal(id, name)}>Delete</Dropdown.Item>
                 </Dropdown.Menu>
               </>
             )}

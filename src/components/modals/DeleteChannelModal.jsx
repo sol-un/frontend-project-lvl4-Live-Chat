@@ -6,9 +6,11 @@ import {
 } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { deleteChannel } from '../slices/channelsSlice.js';
+import { deleteChannel } from '../../slices/channelsSlice.js';
 
-const DeleteChannelModal = ({ show, id, closeCurrentModal }) => {
+const DeleteChannelModal = ({
+  show, id, channelName, closeCurrentModal,
+}) => {
   const cancelButton = React.useRef(null);
   const dispatch = useDispatch();
   return (
@@ -17,14 +19,14 @@ const DeleteChannelModal = ({ show, id, closeCurrentModal }) => {
       onEntered={() => cancelButton.current.focus()}
       onHide={closeCurrentModal}
     >
-      <Modal.Header>
+      <Modal.Header closeButton>
         <Modal.Title>
-          Delete channel
+          {`Delete '${channelName}'`}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="text-center mb-2">
-          The channel and all its messages will be irrevocably lost.
+          {`The channel '${channelName}' and all its contents will be lost forever.`}
         </p>
         <p className="text-center mb-5">
           Are you sure?
@@ -35,13 +37,13 @@ const DeleteChannelModal = ({ show, id, closeCurrentModal }) => {
           onSubmit={(_values, { setSubmitting, resetForm, setStatus }) => {
             dispatch(deleteChannel({ id }))
               .then(unwrapResult)
-              .then(() => {
-                setStatus({ networkError: false });
-                resetForm();
-                closeCurrentModal();
-              })
+              .then(() => closeCurrentModal())
               .catch(() => setStatus({ networkError: true }))
-              .finally(() => setSubmitting(false));
+              .finally(() => {
+                resetForm();
+                setStatus({ networkError: false });
+                setSubmitting(false);
+              });
           }}
         >
           {({
@@ -56,19 +58,12 @@ const DeleteChannelModal = ({ show, id, closeCurrentModal }) => {
                   <InputGroup>
                     <Button className="mx-auto" ref={cancelButton} variant="primary" onClick={closeCurrentModal}>Cancel</Button>
                     <Button className="mx-auto" variant="danger" type="submit" disabled={isSubmitting}>
-                      Delete
+                      {`Delete '${channelName}'`}
                     </Button>
                   </InputGroup>
-                  {isNetworkError && (
-                    <Form.Text className="text-center text-danger mt-4">
-                      Network error!
-                    </Form.Text>
-                  )}
-                  {!isNetworkError && (
-                    <div className="d-block">
-                      &nbsp;
-                    </div>
-                  )}
+                  <Form.Text className="text-center text-danger mt-4">
+                    {isNetworkError && 'Network error!'}
+                  </Form.Text>
                 </Form.Group>
               </Form>
             );
@@ -86,6 +81,7 @@ DeleteChannelModal.defaultProps = {
 DeleteChannelModal.propTypes = {
   show: PropTypes.bool.isRequired,
   id: PropTypes.number,
+  channelName: PropTypes.string.isRequired,
   closeCurrentModal: PropTypes.func.isRequired,
 };
 

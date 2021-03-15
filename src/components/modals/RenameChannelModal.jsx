@@ -6,9 +6,11 @@ import {
 } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { createChannel } from '../slices/channelsSlice.js';
+import { updateChannelName } from '../../slices/channelsSlice.js';
 
-const CreateChannelModal = ({ show, closeCurrentModal }) => {
+const RenameChannelModal = ({
+  show, id, channelName, closeCurrentModal,
+}) => {
   const inputField = React.useRef(null);
   const dispatch = useDispatch();
   return (
@@ -17,9 +19,9 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
       onEntered={() => inputField.current.focus()}
       onHide={closeCurrentModal}
     >
-      <Modal.Header>
+      <Modal.Header closeButton>
         <Modal.Title>
-          New channel
+          {`Rename '${channelName}'`}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -35,17 +37,18 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
           }}
           validateOnBlur={false}
           onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
-            dispatch(createChannel({
+            dispatch(updateChannelName({
               name: values.name,
+              id,
             }))
               .then(unwrapResult)
-              .then(() => {
-                setStatus({ networkError: false });
-                resetForm();
-                closeCurrentModal();
-              })
+              .then(() => closeCurrentModal())
               .catch(() => setStatus({ networkError: true }))
-              .finally(() => setSubmitting(false));
+              .finally(() => {
+                resetForm();
+                setStatus({ networkError: false });
+                setSubmitting(false);
+              });
           }}
         >
           {({
@@ -63,20 +66,20 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <InputGroup>
-                    <Form.Label htmlFor="name" srOnly>Channel name</Form.Label>
+                    <Form.Label htmlFor="name" srOnly>New channel name</Form.Label>
                     <Form.Control
                       ref={inputField}
                       id="name"
                       type="text"
                       className="mr-2"
-                      placeholder="Enter channel name..."
+                      placeholder="Enter new channel name..."
                       value={values.name}
                       isInvalid={isNetworkError}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
                     <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
-                      Create
+                      Rename
                     </Button>
                   </InputGroup>
                   {!isValid && (
@@ -89,11 +92,6 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
                       Network error!
                     </Form.Text>
                   )}
-                  {isValid && !isNetworkError && (
-                    <div className="d-block">
-                      &nbsp;
-                    </div>
-                  )}
                 </Form.Group>
               </Form>
             );
@@ -104,9 +102,15 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
   );
 };
 
-CreateChannelModal.propTypes = {
+RenameChannelModal.defaultProps = {
+  id: null,
+};
+
+RenameChannelModal.propTypes = {
   show: PropTypes.bool.isRequired,
+  id: PropTypes.number,
+  channelName: PropTypes.string.isRequired,
   closeCurrentModal: PropTypes.func.isRequired,
 };
 
-export default CreateChannelModal;
+export default RenameChannelModal;
