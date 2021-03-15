@@ -39,11 +39,13 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
               name: values.name,
             }))
               .then(unwrapResult)
-              .then(() => closeCurrentModal())
-              .catch(() => setStatus({ networkError: true }))
-              .finally(() => {
+              .then(() => {
+                closeCurrentModal();
                 resetForm();
                 setStatus({ networkError: false });
+              })
+              .catch(() => setStatus({ networkError: true }))
+              .finally(() => {
                 setSubmitting(false);
               });
           }}

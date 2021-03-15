@@ -37,11 +37,12 @@ const DeleteChannelModal = ({
           onSubmit={(_values, { setSubmitting, resetForm, setStatus }) => {
             dispatch(deleteChannel({ id }))
               .then(unwrapResult)
-              .then(() => closeCurrentModal())
+              .then(() => {
+                closeCurrentModal();
+                setStatus({ networkError: false });
+              })
               .catch(() => setStatus({ networkError: true }))
               .finally(() => {
-                resetForm();
-                setStatus({ networkError: false });
                 setSubmitting(false);
               });
           }}
