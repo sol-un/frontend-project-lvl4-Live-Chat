@@ -28,7 +28,7 @@ const MessageForm = () => {
         dispatch(createMessage({
           text: values.message,
           userName,
-          currentChannelId,
+          channelId: currentChannelId,
         }))
           .then(unwrapResult)
           .then(() => {

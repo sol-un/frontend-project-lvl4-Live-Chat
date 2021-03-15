@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 const provideUserName = () => {
   let userName = Cookies.get('hexletChatUserName');
   if (!userName) {
-    userName = kebabCase(faker.fake('{{commerce.color}}-{{random.word}}-{{random.number}}'));
+    userName = kebabCase(faker.fake('{{commerce.color}} {{random.word}} {{random.number}}'));
     Cookies.set('hexletChatUserName', userName);
   }
   return userName;

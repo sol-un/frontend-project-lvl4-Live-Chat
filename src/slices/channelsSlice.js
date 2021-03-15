@@ -4,8 +4,7 @@ import routes from '../routes.js';
 
 export const createChannel = createAsyncThunk(
   'channels/create',
-  // eslint-disable-next-line no-unused-vars
-  async ({ name }, thunkAPI) => axios({
+  async ({ name }) => axios({
     method: 'post',
     url: routes.channelsPath(),
     data: {
@@ -16,8 +15,7 @@ export const createChannel = createAsyncThunk(
 
 export const updateChannelName = createAsyncThunk(
   'channels/updateNameById',
-  // eslint-disable-next-line no-unused-vars
-  async ({ name, id }, thunkAPI) => axios({
+  async ({ name, id }) => axios({
     method: 'patch',
     url: routes.channelPath(id),
     data: {
@@ -28,8 +26,7 @@ export const updateChannelName = createAsyncThunk(
 
 export const deleteChannel = createAsyncThunk(
   'channels/deleteById',
-  // eslint-disable-next-line no-unused-vars
-  async ({ id }, thunkAPI) => axios({
+  async ({ id }) => axios({
     method: 'delete',
     url: routes.channelPath(id),
   }),

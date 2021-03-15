@@ -15,18 +15,10 @@ const socket = io();
 const App = () => {
   const dispatch = useDispatch();
 
-  socket.on('newMessage', ({ data }) => {
-    dispatch(addMessage(data));
-  });
-  socket.on('newChannel', ({ data }) => {
-    dispatch(addChannel(data));
-  });
-  socket.on('renameChannel', ({ data }) => {
-    dispatch(renameChannel(data));
-  });
-  socket.on('removeChannel', ({ data }) => {
-    dispatch(removeChannel(data));
-  });
+  socket.on('newMessage', ({ data }) => dispatch(addMessage(data)));
+  socket.on('newChannel', ({ data }) => dispatch(addChannel(data)));
+  socket.on('renameChannel', ({ data }) => dispatch(renameChannel(data)));
+  socket.on('removeChannel', ({ data }) => dispatch(removeChannel(data)));
 
   return (
     <Row className="h-100 pb-3">

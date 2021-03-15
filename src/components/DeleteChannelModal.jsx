@@ -30,9 +30,9 @@ const DeleteChannelModal = ({ show, id, closeCurrentModal }) => {
           Are you sure?
         </p>
         <Formik
-          initialValues={{ token: '' }}
+          initialValues={{}}
           initialStatus={{ networkError: false }}
-          onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
+          onSubmit={(_values, { setSubmitting, resetForm, setStatus }) => {
             dispatch(deleteChannel({ id }))
               .then(unwrapResult)
               .then(() => {

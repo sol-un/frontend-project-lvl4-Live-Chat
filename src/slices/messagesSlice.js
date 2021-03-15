@@ -5,10 +5,9 @@ import { removeChannel } from './channelsSlice.js';
 
 export const createMessage = createAsyncThunk(
   'messages/create',
-  // eslint-disable-next-line no-unused-vars
-  async ({ text, userName, currentChannelId }, thunkAPI) => axios({
+  async ({ text, userName, channelId }) => axios({
     method: 'post',
-    url: routes.channelMessagesPath(currentChannelId),
+    url: routes.channelMessagesPath(channelId),
     data: {
       data: { attributes: { text, userName } },
     },
