@@ -8,9 +8,12 @@ const Messages = () => {
     delay: 0,
     containerId: 'message-container',
   }));
-  const messages = useSelector((state) => state.messages);
   const currentChannelId = useSelector((state) => state.currentChannelId);
-  const currentChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
+  const messages = useSelector((state) => state.messages);
+  const currentChannelMessages = React.useMemo(
+    () => messages.filter(({ channelId }) => channelId === currentChannelId),
+    [currentChannelId, messages],
+  );
   return (
     <div id="message-container" className="overflow-auto mb-3">
       {currentChannelMessages.map(({ id, text, userName }) => (
