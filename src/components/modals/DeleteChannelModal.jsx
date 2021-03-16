@@ -34,7 +34,7 @@ const DeleteChannelModal = ({
         <Formik
           initialValues={{}}
           initialStatus={{ networkError: false }}
-          onSubmit={(_values, { setSubmitting, resetForm, setStatus }) => {
+          onSubmit={(_values, { setSubmitting, setStatus }) => {
             dispatch(deleteChannel({ id }))
               .then(unwrapResult)
               .then(() => {
