@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
@@ -11,6 +11,8 @@ import { updateChannelName } from '../../slices/channelsSlice.js';
 const RenameChannelModal = ({
   show, id, channelName, closeCurrentModal,
 }) => {
+  const channels = useSelector((state) => state.channels);
+  const channelNames = channels.map(({ name }) => name);
   const inputField = React.useRef(null);
   const dispatch = useDispatch();
   return (
@@ -32,6 +34,9 @@ const RenameChannelModal = ({
             const errors = {};
             if (values.name.length < 1) {
               errors.message = 'Channel name can\'t be empty!';
+            }
+            if (channelNames.includes(values.name)) {
+              errors.message = 'This name is already taken by another channel.';
             }
             return errors;
           }}
@@ -74,7 +79,7 @@ const RenameChannelModal = ({
                       id="name"
                       type="text"
                       className="mr-2"
-                      placeholder="Enter new channel name..."
+                      placeholder={`Enter the new name for '${channelName}'...`}
                       value={values.name}
                       isInvalid={isNetworkError}
                       onChange={handleChange}
