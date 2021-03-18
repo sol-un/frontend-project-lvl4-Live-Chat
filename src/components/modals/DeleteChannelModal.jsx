@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { deleteChannel } from '../../slices/channelsSlice.js';
+import axios from 'axios';
+import routes from '../../routes.js';
 
 const DeleteChannelModal = ({
   show, id, channelName, closeCurrentModal,
 }) => {
   const cancelButton = React.useRef(null);
-  const dispatch = useDispatch();
   return (
     <Modal
       show={show}
@@ -34,9 +32,11 @@ const DeleteChannelModal = ({
         <Formik
           initialValues={{}}
           initialStatus={{ networkError: false }}
-          onSubmit={(_values, { setSubmitting, setStatus }) => {
-            dispatch(deleteChannel({ id }))
-              .then(unwrapResult)
+          onSubmit={async (_values, { setSubmitting, setStatus }) => {
+            axios({
+              method: 'delete',
+              url: routes.channelPath(id),
+            })
               .then(() => {
                 closeCurrentModal();
                 setStatus({ networkError: false });

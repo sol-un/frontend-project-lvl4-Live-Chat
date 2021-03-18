@@ -1,15 +1,14 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { createMessage } from '../slices/messagesSlice.js';
+import axios from 'axios';
 import AppContext from '../app-context.js';
+import routes from '../routes.js';
 
 const MessageForm = () => {
-  const dispatch = useDispatch();
   const currentChannelId = useSelector((state) => state.currentChannelId);
   const userName = React.useContext(AppContext);
   return (
@@ -24,13 +23,18 @@ const MessageForm = () => {
         return errors;
       }}
       validateOnBlur={false}
-      onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
-        dispatch(createMessage({
-          text: values.message,
-          userName,
-          channelId: currentChannelId,
-        }))
-          .then(unwrapResult)
+      onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
+        const data = {
+          attributes: {
+            text: values.message,
+            userName,
+          },
+        };
+        return axios({
+          method: 'post',
+          url: routes.channelMessagesPath(currentChannelId),
+          data: { data },
+        })
           .then(() => {
             setStatus({ networkError: false });
             resetForm();
@@ -58,6 +62,7 @@ const MessageForm = () => {
                 <Form.Label htmlFor="message" srOnly>Your message</Form.Label>
                 <Form.Control
                   id="message"
+                  aria-label="message"
                   type="text"
                   className="mr-2"
                   value={values.message}
@@ -65,7 +70,12 @@ const MessageForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
+                <Button
+                  aria-label="submit"
+                  variant="primary"
+                  type="submit"
+                  disabled={!isValid || isSubmitting}
+                >
                   Submit
                 </Button>
               </InputGroup>

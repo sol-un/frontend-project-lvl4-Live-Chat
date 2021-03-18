@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { createChannel } from '../../slices/channelsSlice.js';
+import axios from 'axios';
+import routes from '../../routes.js';
 
 const CreateChannelModal = ({ show, closeCurrentModal }) => {
   const channels = useSelector((state) => state.channels);
   const channelNames = channels.map(({ name }) => name);
   const inputField = React.useRef(null);
-  const dispatch = useDispatch();
   return (
     <Modal
       show={show}
@@ -39,11 +38,17 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
             return errors;
           }}
           validateOnBlur={false}
-          onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
-            dispatch(createChannel({
-              name: values.name,
-            }))
-              .then(unwrapResult)
+          onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
+            const data = {
+              attributes: {
+                name: values.name,
+              },
+            };
+            return axios({
+              method: 'post',
+              url: routes.channelsPath(),
+              data: { data },
+            })
               .then(() => {
                 closeCurrentModal();
                 resetForm();

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { updateChannelName } from '../../slices/channelsSlice.js';
+import axios from 'axios';
+import routes from '../../routes.js';
 
 const RenameChannelModal = ({
   show, id, channelName, closeCurrentModal,
@@ -14,7 +14,6 @@ const RenameChannelModal = ({
   const channels = useSelector((state) => state.channels);
   const channelNames = channels.map(({ name }) => name);
   const inputField = React.useRef(null);
-  const dispatch = useDispatch();
   return (
     <Modal
       show={show}
@@ -41,12 +40,17 @@ const RenameChannelModal = ({
             return errors;
           }}
           validateOnBlur={false}
-          onSubmit={(values, { setSubmitting, resetForm, setStatus }) => {
-            dispatch(updateChannelName({
-              name: values.name,
-              id,
-            }))
-              .then(unwrapResult)
+          onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
+            const data = {
+              attributes: {
+                name: values.name,
+              },
+            };
+            return axios({
+              method: 'patch',
+              url: routes.channelPath(id),
+              data: { data },
+            })
               .then(() => {
                 closeCurrentModal();
                 resetForm();
