@@ -7,8 +7,8 @@ import {
 import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
-import { addMessage } from '../slices/messagesSlice.js';
-import { addChannel, renameChannel, removeChannel } from '../slices/channelsSlice.js';
+import { addMessage } from '../slices/messages.js';
+import { addChannel, renameChannel, removeChannel } from '../slices/channels.js';
 
 const socket = io();
 

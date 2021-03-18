@@ -7,7 +7,9 @@ import faker from 'faker';
 import Cookies from 'js-cookie';
 import Chat from './Chat.jsx';
 import AppContext from '../app-context.js';
-import { channelsReducer, messagesReducer, currentChannelIdReducer } from '../slices/index.js';
+import channelsReducer from '../slices/channels.js';
+import messagesReducer from '../slices/messages.js';
+import currentChannelIdReducer from '../slices/currentChannelId.js';
 
 const setUserNameIfEmpty = () => {
   // eslint-disable-next-line

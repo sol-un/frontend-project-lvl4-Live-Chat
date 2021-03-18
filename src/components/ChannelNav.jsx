@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Nav, NavLink, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
-import { changeCurrentChannelId } from '../slices/currentChannelIdSlice.js';
+import { changeCurrentChannelId } from '../slices/currentChannelId.js';
 import CreateChannelModal from './modals/CreateChannelModal.jsx';
 import RenameChannelModal from './modals/RenameChannelModal.jsx';
 import DeleteChannelModal from './modals/DeleteChannelModal.jsx';
