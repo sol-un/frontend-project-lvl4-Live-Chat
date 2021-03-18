@@ -4,19 +4,20 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import faker from 'faker';
-import { kebabCase } from 'lodash';
 import Cookies from 'js-cookie';
 import Chat from './Chat.jsx';
 import AppContext from '../app-context.js';
 import { channelsReducer, messagesReducer, currentChannelIdReducer } from '../slices/index.js';
 
-const createUserName = () => {
-  const userName = kebabCase(faker.fake('{{commerce.color}} {{random.word}} {{random.number}}'));
-  Cookies.set('hexletChatUserName', userName);
+const setUserNameIfEmpty = () => {
+  // eslint-disable-next-line
+  let userName = Cookies.get('hexletChatUserName');
+  if (!userName) {
+    userName = faker.internet.userName();
+    Cookies.set('hexletChatUserName', userName);
+  }
   return userName;
 };
-
-const provideUserName = () => Cookies.get('hexletChatUserName') || createUserName();
 
 // eslint-disable-next-line react/prop-types
 const App = ({ gon }) => {
@@ -31,7 +32,7 @@ const App = ({ gon }) => {
 
   return (
     <Provider store={store}>
-      <AppContext.Provider value={provideUserName()}>
+      <AppContext.Provider value={setUserNameIfEmpty()}>
         <Chat />
       </AppContext.Provider>
     </Provider>
