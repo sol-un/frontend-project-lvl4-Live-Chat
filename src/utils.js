@@ -19,4 +19,21 @@ const validateChannelName = (input, blocklist) => {
   }
 };
 
-export default validateChannelName;
+const validateMessage = (input) => {
+  const errorMessageDispatcher = {
+    required: 'Message can\'t be empty!',
+  };
+
+  const schema = string()
+    .required();
+
+  try {
+    schema.validateSync(input);
+    return null;
+  } catch (error) {
+    const message = errorMessageDispatcher[error.type];
+    return { message };
+  }
+};
+
+export { validateChannelName, validateMessage };

@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import axios from 'axios';
 import AppContext from '../app-context.js';
 import routes from '../routes.js';
+import { validateMessage } from '../utils.js';
 
 const MessageForm = () => {
   const currentChannelId = useSelector((state) => state.currentChannelId);
@@ -15,13 +16,7 @@ const MessageForm = () => {
     <Formik
       initialValues={{ message: '' }}
       initialStatus={{ networkError: false }}
-      validate={(values) => {
-        const errors = {};
-        if (values.message.length < 1) {
-          errors.message = 'Message can\'t be empty!';
-        }
-        return errors;
-      }}
+      validate={(values) => validateMessage(values.message)}
       validateOnBlur={false}
       onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
         const data = {

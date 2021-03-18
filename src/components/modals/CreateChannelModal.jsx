@@ -7,7 +7,7 @@ import {
 import { Formik } from 'formik';
 import axios from 'axios';
 import routes from '../../routes.js';
-import validateChannelName from './utils.js';
+import { validateChannelName } from '../../utils.js';
 
 const CreateChannelModal = ({ show, closeCurrentModal }) => {
   const channels = useSelector((state) => state.channels);
