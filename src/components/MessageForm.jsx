@@ -64,6 +64,7 @@ const MessageForm = () => {
                   id="message"
                   aria-label="message"
                   type="text"
+                  autoComplete="off"
                   className="mr-2"
                   value={values.message}
                   isInvalid={isNetworkError}

@@ -7,6 +7,7 @@ import {
 import { Formik } from 'formik';
 import axios from 'axios';
 import routes from '../../routes.js';
+import validateChannelName from './utils.js';
 
 const CreateChannelModal = ({ show, closeCurrentModal }) => {
   const channels = useSelector((state) => state.channels);
@@ -27,16 +28,7 @@ const CreateChannelModal = ({ show, closeCurrentModal }) => {
         <Formik
           initialValues={{ name: '' }}
           initialStatus={{ networkError: false }}
-          validate={(values) => {
-            const errors = {};
-            if (values.name.length < 1) {
-              errors.message = 'Channel name can\'t be empty!';
-            }
-            if (channelNames.includes(values.name)) {
-              errors.message = 'This name is already taken by another channel.';
-            }
-            return errors;
-          }}
+          validate={(values) => validateChannelName(values.name, channelNames)}
           validateOnBlur={false}
           onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
             const data = {
