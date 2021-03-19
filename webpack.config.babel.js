@@ -4,7 +4,9 @@ import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import dotenv from 'dotenv';
 
-dotenv.config();
+const env = dotenv.config().parsed;
+
+const envKeys = Object.keys(env).reduce((acc, item) => ({ ...acc, [`process.env.${item}`]: JSON.stringify(env[item]) }), {});
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -32,7 +34,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new webpack.EnvironmentPlugin(['ROLLBAR_ACCESS_TOKEN']),
+    new webpack.DefinePlugin(envKeys),
   ],
   module: {
     rules: [
