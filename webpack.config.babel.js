@@ -5,8 +5,9 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import dotenv from 'dotenv';
 
 const env = dotenv.config().parsed;
-
-const envKeys = env && Object.keys(env).reduce((acc, item) => ({ ...acc, [`process.env.${item}`]: JSON.stringify(env[item]) }), {});
+const envKeys = env
+  ? Object.keys(env).reduce((acc, item) => ({ ...acc, [`process.env.${item}`]: JSON.stringify(env[item]) }), {})
+  : null;
 
 const mode = process.env.NODE_ENV || 'development';
 
