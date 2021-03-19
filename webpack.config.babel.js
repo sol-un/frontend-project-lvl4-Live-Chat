@@ -1,7 +1,10 @@
 // @ts-check
-
+import webpack from 'webpack';
 import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -11,6 +14,10 @@ module.exports = {
     gon: 'gon',
   },
   resolve: {
+    fallback: {
+      fs: false,
+      path: false,
+    },
     extensions: ['.js', '.jsx'],
   },
   output: {
@@ -25,6 +32,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new webpack.EnvironmentPlugin(['ROLLBAR_ACCESS_TOKEN']),
   ],
   module: {
     rules: [
