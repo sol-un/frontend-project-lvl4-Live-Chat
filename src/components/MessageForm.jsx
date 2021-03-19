@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import axios from 'axios';
 import AppContext from '../app-context.js';
 import routes from '../routes.js';
-import { validateMessage } from '../utils.js';
+import { validateMessage } from './utils.js';
 
 const MessageForm = () => {
   const currentChannelId = useSelector((state) => state.currentChannelId);

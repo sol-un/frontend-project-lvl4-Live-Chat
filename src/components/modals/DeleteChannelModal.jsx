@@ -32,20 +32,16 @@ const DeleteChannelModal = ({
         <Formik
           initialValues={{}}
           initialStatus={{ networkError: false }}
-          onSubmit={async (_values, { setSubmitting, setStatus }) => {
-            axios({
-              method: 'delete',
-              url: routes.channelPath(id),
+          onSubmit={async (_values, { setSubmitting, setStatus }) => axios({
+            method: 'delete',
+            url: routes.channelPath(id),
+          })
+            .then(() => {
+              closeCurrentModal();
+              setStatus({ networkError: false });
             })
-              .then(() => {
-                closeCurrentModal();
-                setStatus({ networkError: false });
-              })
-              .catch(() => setStatus({ networkError: true }))
-              .finally(() => {
-                setSubmitting(false);
-              });
-          }}
+            .catch(() => setStatus({ networkError: true }))
+            .finally(() => setSubmitting(false))}
         >
           {({
             status,
@@ -62,9 +58,11 @@ const DeleteChannelModal = ({
                       {`Delete '${channelName}'`}
                     </Button>
                   </InputGroup>
-                  <Form.Text className="text-center text-danger mt-4">
-                    {isNetworkError && 'Network error!'}
-                  </Form.Text>
+                  {isNetworkError && (
+                    <Form.Text className="text-center text-danger mt-4">
+                      Network error!
+                    </Form.Text>
+                  )}
                 </Form.Group>
               </Form>
             );
