@@ -1,19 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { removeChannel } from './channels.js';
 
+const generalChannelId = 1;
+
 const currentChannelIdSlice = createSlice({
   name: 'currentChannelId',
-  initialState: null,
+  initialState: generalChannelId,
   reducers: {
     changeCurrentChannelId(state, action) {
       return action.payload;
     },
   },
   extraReducers: {
-    [removeChannel]: (state, { payload }) => {
-      const generalId = 1;
-      return payload.id === state ? generalId : state;
-    },
+    [removeChannel]: (state, { payload }) => (payload.id === state ? generalChannelId : state),
   },
 });
 
