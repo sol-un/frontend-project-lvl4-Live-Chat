@@ -4,9 +4,7 @@ import {
   Nav, NavLink, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
 import { changeCurrentChannelId } from '../slices/currentChannelId.js';
-import CreateChannelModal from './modals/CreateChannelModal.jsx';
-import RenameChannelModal from './modals/RenameChannelModal.jsx';
-import DeleteChannelModal from './modals/DeleteChannelModal.jsx';
+import getModal from './modals/index.js';
 
 const ChannelNav = () => {
   const [currentModalData, setCurrentModalData] = React.useState({
@@ -31,24 +29,24 @@ const ChannelNav = () => {
     showing: null,
   }));
 
+  const renderModal = () => {
+    if (!currentModalData.showing) {
+      return null;
+    }
+    const Modal = getModal(currentModalData.showing);
+    return (
+      <Modal
+        show
+        closeCurrentModal={closeCurrentModal}
+        id={currentModalData.id}
+        channelName={currentModalData.channelName}
+      />
+    );
+  };
+
   return (
     <>
-      <CreateChannelModal
-        show={currentModalData.showing === 'new'}
-        closeCurrentModal={closeCurrentModal}
-      />
-      <RenameChannelModal
-        show={currentModalData.showing === 'rename'}
-        id={currentModalData.id}
-        channelName={currentModalData.channelName}
-        closeCurrentModal={closeCurrentModal}
-      />
-      <DeleteChannelModal
-        show={currentModalData.showing === 'delete'}
-        id={currentModalData.id}
-        channelName={currentModalData.channelName}
-        closeCurrentModal={closeCurrentModal}
-      />
+      {renderModal()}
       <div className="d-flex mb-2">
         <span>Channels</span>
         <button type="button" className="btn btn-link ml-auto p-0" onClick={handleNewChannelModal}>+</button>
