@@ -6,13 +6,13 @@ const channelsSlice = createSlice({
   reducers: {
     addChannel(state, action) {
       const { payload } = action;
-      state.push(payload.attributes);
+      state.push(payload);
     },
     renameChannel(state, action) {
-      const { payload: { attributes } } = action;
-      const channelId = Number(attributes.id);
+      const { payload } = action;
+      const channelId = Number(payload.id);
       const channel = state.find(({ id }) => id === channelId);
-      channel.name = attributes.name;
+      channel.name = payload.name;
     },
     removeChannel(state, action) {
       const { payload } = action;
