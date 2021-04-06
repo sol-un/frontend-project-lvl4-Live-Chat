@@ -3,10 +3,8 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { io } from 'socket.io-client';
 import faker from 'faker';
 import Cookies from 'js-cookie';
-import Rollbar from 'rollbar';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
   Row, Col,
@@ -20,7 +18,7 @@ import channelsReducer, { addChannel, renameChannel, removeChannel } from './sli
 import currentChannelIdReducer from './slices/currentChannelId.js';
 
 const setUserNameIfEmpty = () => {
-  // eslint-disable-next-line
+  // eslint-disable-next-line functional/no-let
   let userName = Cookies.get('hexletChatUserName');
   if (!userName) {
     userName = faker.internet.userName();
@@ -28,15 +26,6 @@ const setUserNameIfEmpty = () => {
   }
   return userName;
 };
-
-const rollbar = new Rollbar({
-  accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-  payload: {
-    environment: 'production',
-  },
-});
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => (
   <div role="alert">
@@ -46,9 +35,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => (
   </div>
 );
 
-const logToRollbar = (error) => rollbar.error(error);
-
-const App = ({ gon }) => {
+const App = ({ gon, rollbar, socket }) => {
   const store = configureStore({
     reducer: {
       channels: channelsReducer,
