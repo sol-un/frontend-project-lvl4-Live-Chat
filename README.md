@@ -3,4 +3,4 @@
 
 This is a simple live chat app developed as a pet project under the guidance of Hexlet, a self-education platform.
 
-The app is available here: https://frozen-lake-99251.herokuapp.com/
+The app is available here: https://thawing-plateau-94503.herokuapp.com/login
