@@ -7,7 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Button } from 'react-bootstrap';
 
 import LogInForm from './LogInForm.jsx';
 import Chat from './Chat.jsx';
@@ -16,11 +16,12 @@ import authContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const isLoggedIn = localStorage.hexletChatUserId !== undefined;
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn);
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('hexletChatUserId');
     setLoggedIn(false);
   };
 
@@ -44,12 +45,19 @@ const PrivateRoute = ({ children, path }) => {
   );
 };
 
+const LogOutButton = () => {
+  const auth = useAuth();
+
+  return auth.loggedIn && <Button className="ml-auto" variant="outline-secondary" onClick={auth.logOut}>Выйти</Button>;
+};
+
 export default () => (
   <div className="d-flex flex-column h-100">
     <AuthProvider>
       <Router>
         <Navbar className="mb-3" expand="lg">
           <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+          <LogOutButton />
         </Navbar>
         <Switch>
           <PrivateRoute exact path="/">
