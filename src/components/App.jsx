@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -6,9 +7,7 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
-
 import { Navbar, Button } from 'react-bootstrap';
-
 import LogInForm from './LogInForm.jsx';
 import Chat from './Chat.jsx';
 import NoMatch from './NoMatch.jsx';
@@ -16,7 +15,7 @@ import authContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const isLoggedIn = localStorage.hexletChatUserId !== undefined;
+  const isLoggedIn = _.has(localStorage, 'hexletChatUserId');
   const [loggedIn, setLoggedIn] = useState(isLoggedIn);
 
   const logIn = () => setLoggedIn(true);
