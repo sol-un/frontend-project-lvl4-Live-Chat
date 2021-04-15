@@ -71,7 +71,7 @@ const MessageForm = () => {
                   type="submit"
                   disabled={!isValid || isSubmitting}
                 >
-                  Submit
+                  Отправить
                 </Button>
               </InputGroup>
               {!isValid && (
