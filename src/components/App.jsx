@@ -45,6 +45,19 @@ const PrivateRoute = ({ children, path }) => {
   );
 };
 
+const AuthRoute = ({ children, path }) => {
+  const auth = useAuth();
+
+  return (
+    <Route
+      path={path}
+      render={({ location }) => (auth.loggedIn
+        ? <Redirect to={{ pathname: '/', state: { from: location } }} />
+        : children)}
+    />
+  );
+};
+
 const LogOutButton = () => {
   const auth = useAuth();
 
@@ -63,9 +76,9 @@ export default () => (
           <PrivateRoute exact path="/">
             <Chat />
           </PrivateRoute>
-          <Route exact path="/login">
+          <AuthRoute exact path="/login">
             <LogInForm />
-          </Route>
+          </AuthRoute>
           <Route path="*">
             <NoMatch />
           </Route>
