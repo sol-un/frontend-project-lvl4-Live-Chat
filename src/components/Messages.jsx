@@ -16,12 +16,12 @@ const Messages = () => {
   );
   return (
     <div id="message-container" className="overflow-auto mb-3">
-      {currentChannelMessages.map(({ id, text, userName }) => (
+      {currentChannelMessages.map(({ id, username, message }) => (
         <p key={id}>
           <b>
-            {`${userName}: `}
+            {`${username}: `}
           </b>
-          {text}
+          {message}
         </p>
       ))}
     </div>

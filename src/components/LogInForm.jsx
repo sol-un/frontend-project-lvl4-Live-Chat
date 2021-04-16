@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import { useLocation, useHistory } from 'react-router-dom';
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 export default () => {
@@ -31,8 +31,9 @@ export default () => {
 
               try {
                 const res = await axios.post(routes.loginPath(), values);
-                localStorage.setItem('hexletChatUserId', JSON.stringify(res.data.token));
-                auth.logIn();
+                const { username, token } = res.data;
+                localStorage.setItem('hexletChatUserId', JSON.stringify(token));
+                auth.logIn(username);
                 const { from } = location.state || { from: { pathname: '/' } };
                 history.replace(from);
               } catch (err) {

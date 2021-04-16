@@ -1,40 +1,33 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import axios from 'axios';
-import routes from '../routes.js';
 import { validateMessage } from './utils.js';
+import { useSocket } from '../hooks/index.jsx';
+import { authContext } from '../contexts/index.jsx';
 
 const MessageForm = () => {
+  const { username } = useContext(authContext);
   const currentChannelId = useSelector((state) => state.currentChannelId);
-  const userName = 'token';
+  const socket = useSocket();
   return (
     <Formik
       initialValues={{ message: '' }}
       initialStatus={{ networkError: false }}
       validate={(values) => validateMessage(values.message)}
       validateOnBlur={false}
-      onSubmit={async (values, { setSubmitting, resetForm, setStatus }) => {
-        const data = {
-          attributes: {
-            text: values.message,
-            userName,
-          },
-        };
-        return axios({
-          method: 'post',
-          url: routes.channelMessagesPath(currentChannelId),
-          data: { data },
-        })
-          .then(() => {
+      onSubmit={({ message }, { setSubmitting, resetForm, setStatus }) => {
+        if (socket.connected) {
+          socket.emit('newMessage', { username, message, channelId: currentChannelId }, () => {
             setStatus({ networkError: false });
             resetForm();
-          })
-          .catch(() => setStatus({ networkError: true }))
-          .finally(() => setSubmitting(false));
+          });
+        } else {
+          setStatus({ networkError: true });
+        }
+        setSubmitting(false);
       }}
     >
       {(props) => {
