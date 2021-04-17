@@ -74,7 +74,7 @@ const MessageForm = () => {
               )}
               {isNetworkError && (
                 <Form.Text className="text-danger">
-                  Network error!
+                  Ошибка сети!
                 </Form.Text>
               )}
               {isValid && !isNetworkError && (

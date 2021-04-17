@@ -26,18 +26,27 @@ export default () => {
               username: '',
               password: '',
             }}
-            onSubmit={async (values) => {
+            initialStatus={{ networkError: false }}
+            onSubmit={async (values, { setSubmitting, setStatus }) => {
+              setSubmitting(false);
               setAuthFailed(false);
-
               try {
                 const res = await axios.post(routes.loginPath(), values);
+                setStatus({ networkError: false });
+
                 const { username, token } = res.data;
                 localStorage.setItem('hexletChatUserId', JSON.stringify(token));
                 auth.logIn(username);
+
                 const { from } = location.state || { from: { pathname: '/' } };
                 history.replace(from);
               } catch (err) {
+                if (!err.response) {
+                  setStatus({ networkError: true });
+                  return;
+                }
                 if (err.isAxiosError && err.response.status === 401) {
+                  setStatus({ networkError: false });
                   setAuthFailed(true);
                   inputRef.current.select();
                   return;
@@ -47,7 +56,10 @@ export default () => {
             }}
           >
             {(props) => {
-              const { handleSubmit, handleChange } = props;
+              const {
+                status, isSubmitting, handleSubmit, handleChange,
+              } = props;
+              const isNetworkError = status.networkError;
               return (
                 <Form className="p-3" onSubmit={handleSubmit}>
                   <Form.Group>
@@ -72,8 +84,20 @@ export default () => {
                       isInvalid={authFailed}
                     />
                     <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                    {isNetworkError && (
+                      <Form.Text className="text-danger">
+                        Ошибка сети!
+                      </Form.Text>
+                    )}
                   </Form.Group>
-                  <Button className="w-100 mb-3" type="submit" variant="outline-primary">Войти</Button>
+                  <Button
+                    className="w-100 mb-3"
+                    type="submit"
+                    variant="outline-primary"
+                    disabled={isSubmitting}
+                  >
+                    Войти
+                  </Button>
                 </Form>
               );
             }}
