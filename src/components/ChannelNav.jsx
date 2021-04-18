@@ -4,6 +4,7 @@ import {
   Nav, NavLink, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
 import { changeCurrentChannelId } from '../slices/currentChannelId.js';
+import { showModal } from '../slices/uiState.js';
 
 const ChannelNav = () => {
   const channels = useSelector((state) => state.channels);
@@ -12,9 +13,9 @@ const ChannelNav = () => {
 
   const handleCurrentChannelChange = (id) => () => dispatch(changeCurrentChannelId(id));
 
-  const handleNewChannelModal = () => console.log('New channel');
-  const handleRenameChannelModal = (id, channelName) => () => console.log(`Rename ${channelName}`);
-  const handleDeleteChannelModal = (id, channelName) => () => console.log(`Delete ${channelName}`);
+  const handleNewChannelModal = () => dispatch(showModal({ type: 'adding' }));
+  const handleRenameChannelModal = (channelId, channelName) => () => dispatch(showModal({ type: 'renaming', channelId, channelName }));
+  const handleDeleteChannelModal = (channelId, channelName) => () => dispatch(showModal({ type: 'removing', channelId, channelName }));
 
   return (
     <>
