@@ -4,9 +4,13 @@ import {
   Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { validateMessage } from './utils.js';
+import * as yup from 'yup';
 import { useSocket } from '../hooks/index.jsx';
 import { authContext } from '../contexts/index.jsx';
+
+const messageSchema = yup.object().shape({
+  message: yup.string().required('Сообщение не должно быть пустым!'),
+});
 
 const MessageForm = () => {
   const { username } = useContext(authContext);
@@ -16,7 +20,7 @@ const MessageForm = () => {
     <Formik
       initialValues={{ message: '' }}
       initialStatus={{ networkError: false }}
-      validate={(values) => validateMessage(values.message)}
+      validationSchema={messageSchema}
       validateOnBlur={false}
       onSubmit={({ message }, { setSubmitting, resetForm, setStatus }) => {
         if (socket.connected) {
@@ -67,7 +71,7 @@ const MessageForm = () => {
                   Отправить
                 </Button>
               </InputGroup>
-              {!isValid && (
+              {errors.message && (
                 <Form.Text className="text-muted">
                   {errors.message}
                 </Form.Text>

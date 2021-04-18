@@ -4,14 +4,19 @@ import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { validateChannelName } from '../utils.js';
+import * as yup from 'yup';
 import { useSocket } from '../../hooks/index.jsx';
 
 export default ({ modalInfo, onHide }) => {
   const { channelId, channelName } = modalInfo;
   const socket = useSocket();
+
   const channels = useSelector((state) => state.channels);
   const channelNames = channels.map(({ name }) => name);
+  const channelNameSchema = yup.object().shape({
+    name: yup.string().required('Имя канала не должно быть пустым!').notOneOf(channelNames, 'Канал с таким именем уже существует.'),
+  });
+
   const inputField = React.useRef(null);
   return (
     <Modal
@@ -26,7 +31,7 @@ export default ({ modalInfo, onHide }) => {
         <Formik
           initialValues={{ name: '' }}
           initialStatus={{ networkError: false }}
-          validate={(values) => validateChannelName(values.name, channelNames)}
+          validationSchema={channelNameSchema}
           validateOnBlur={false}
           onSubmit={({ name }, { setSubmitting, resetForm, setStatus }) => {
             if (socket.connected) {
@@ -72,9 +77,9 @@ export default ({ modalInfo, onHide }) => {
                       Create
                     </Button>
                   </InputGroup>
-                  {!isValid && (
+                  {errors.name && (
                     <Form.Text className="text-muted">
-                      {errors.message}
+                      {errors.name}
                     </Form.Text>
                   )}
                   {isNetworkError && (
