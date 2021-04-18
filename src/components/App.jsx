@@ -13,6 +13,7 @@ import {
 import { Navbar, Button } from 'react-bootstrap';
 import routes from '../routes.js';
 import LogInForm from './LogInForm.jsx';
+import SignUpForm from './SignUpForm.jsx';
 import Chat from './Chat.jsx';
 import NoMatch from './NoMatch.jsx';
 import { authContext } from '../contexts/index.jsx';
@@ -146,6 +147,9 @@ export default () => {
             </PrivateRoute>
             <AuthRoute exact path="/login">
               <LogInForm />
+            </AuthRoute>
+            <AuthRoute exact path="/signup">
+              <SignUpForm />
             </AuthRoute>
             <Route path="*">
               <NoMatch />
