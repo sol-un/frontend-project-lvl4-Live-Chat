@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "0.0.1",
   "description": "",
-  "main": "server/index.js",
+  "main": "src/index.js",
   "type": "module",
   "engines": {
     "node": "14.x"
@@ -17,7 +17,10 @@
     "type": "git",
     "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
   },
-  "author": "S. J.",
+  "author": "Kirill Mokevnin",
+  "contributors": [
+    "S. J."
+  ],
   "license": "ISC",
   "homepage": "",
   "dependencies": {
