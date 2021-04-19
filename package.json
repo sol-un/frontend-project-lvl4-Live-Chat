@@ -17,10 +17,7 @@
     "type": "git",
     "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
   },
-  "author": "Kirill Mokevnin",
-  "contributors": [
-    "S. J."
-  ],
+  "author": "S. J.",
   "license": "ISC",
   "homepage": "",
   "dependencies": {
