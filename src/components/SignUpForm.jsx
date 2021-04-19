@@ -3,25 +3,27 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 
-const SignupSchema = yup.object().shape({
-  username: yup.string().required('Обязательное поле').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
-  password: yup.string().required('Обязательное поле').min(6, 'Не менее 6 символов'),
-  confirmPassword: yup.string().required('Обязательное поле').test(
-    'passwordNotConfirmed',
-    'Пароли должны совпадать',
-    (value, context) => value === context.parent.password,
-  ),
-});
-
 export default () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const history = useHistory();
   const inputRef = useRef();
+
+  const SignupSchema = yup.object().shape({
+    username: yup.string().required(t('errors.required')).min(3, `${t('errors.signup.username')}!`).max(20, `${t('errors.signup.username')}!`),
+    password: yup.string().required(t('errors.required')).min(6, `${t('errors.signup.password')}!`),
+    confirmPassword: yup.string().required(t('errors.required')).test(
+      'passwordNotConfirmed',
+      `${t('errors.signup.confirmPassword')}!`,
+      (value, context) => value === context.parent.password,
+    ),
+  });
 
   useEffect(() => {
     inputRef.current.focus();
@@ -79,10 +81,10 @@ export default () => {
               return (
                 <Form className="p-3" onSubmit={handleSubmit}>
                   <Form.Group>
-                    <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+                    <Form.Label htmlFor="username">{t('username')}</Form.Label>
                     <Form.Control
                       required
-                      placeholder="От 3 до 20 символов"
+                      placeholder={t('errors.signup.username')}
                       onChange={handleChange}
                       id="username"
                       name="username"
@@ -92,10 +94,10 @@ export default () => {
                     {errors.username && <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>}
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label htmlFor="password">Пароль</Form.Label>
+                    <Form.Label htmlFor="password">{t('password')}</Form.Label>
                     <Form.Control
                       required
-                      placeholder="Не менее 6 символов"
+                      placeholder={t('errors.signup.password')}
                       type="password"
                       onChange={handleChange}
                       id="password"
@@ -105,21 +107,21 @@ export default () => {
                     {errors.password && <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>}
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+                    <Form.Label htmlFor="confirmPassword">{t('confirmPassword')}</Form.Label>
                     <Form.Control
                       required
-                      placeholder="Пароли должны совпадать"
+                      placeholder={t('errors.signup.confirmPassword')}
                       type="password"
                       onChange={handleChange}
                       id="confirmPassword"
                       name="confirmPassword"
                       isInvalid={authFailed || errors.confirmPassword}
                     />
-                    {errors.password && <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>}
+                    {errors.confirmPassword && <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>}
                   </Form.Group>
                   {isNetworkError && (
                     <Form.Text className="text-danger">
-                      Ошибка сети!
+                      {t('errors.network')}
                     </Form.Text>
                   )}
                   <Button
@@ -128,7 +130,7 @@ export default () => {
                     variant="outline-primary"
                     disabled={isSubmitting}
                   >
-                    Зарегистрироваться
+                    {t('signup')}
                   </Button>
                 </Form>
               );

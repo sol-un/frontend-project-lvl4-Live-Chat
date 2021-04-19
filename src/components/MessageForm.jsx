@@ -3,16 +3,19 @@ import { useSelector } from 'react-redux';
 import {
   Form, Button, InputGroup,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSocket } from '../hooks/index.jsx';
 import { authContext } from '../contexts/index.jsx';
 
-const messageSchema = yup.object().shape({
-  message: yup.string().required('Сообщение не должно быть пустым!'),
-});
-
 const MessageForm = () => {
+  const { t } = useTranslation();
+
+  const messageSchema = yup.object().shape({
+    message: yup.string().required(t('errors.required')),
+  });
+
   const { username } = useContext(authContext);
   const currentChannelId = useSelector((state) => state.currentChannelId);
   const socket = useSocket();
@@ -50,7 +53,7 @@ const MessageForm = () => {
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <InputGroup>
-                <Form.Label htmlFor="message" srOnly>Your message</Form.Label>
+                <Form.Label htmlFor="message" srOnly>{t('message')}</Form.Label>
                 <Form.Control
                   id="message"
                   aria-label="message"
@@ -68,7 +71,7 @@ const MessageForm = () => {
                   type="submit"
                   disabled={!isValid || isSubmitting}
                 >
-                  Отправить
+                  {t('send')}
                 </Button>
               </InputGroup>
               {errors.message && (
@@ -78,7 +81,7 @@ const MessageForm = () => {
               )}
               {isNetworkError && (
                 <Form.Text className="text-danger">
-                  Ошибка сети!
+                  {t('errors.network')}
                 </Form.Text>
               )}
               {isValid && !isNetworkError && (

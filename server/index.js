@@ -53,7 +53,7 @@ const setUpAuth = (app) => {
     .decorate('authenticate', async (req, reply) => {
       try {
         await req.jwtVerify();
-      } catch (_err) {
+      } catch (err) {
         reply.send(new Unauthorized());
       }
     });

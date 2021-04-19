@@ -128,7 +128,6 @@ export default (app, defaultState = {}) => {
       reply.send(new Unauthorized());
       return;
     }
-
     reply
       .header('Content-Type', 'application/json; charset=utf-8')
       .send(_.omit(state, 'users'));

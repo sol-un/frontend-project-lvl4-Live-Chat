@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Nav, NavLink, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { changeCurrentChannelId } from '../slices/currentChannelId.js';
 import { showModal } from '../slices/uiState.js';
 
 const ChannelNav = () => {
+  const { t } = useTranslation();
   const channels = useSelector((state) => state.channels);
   const currentChannelId = useSelector((state) => state.currentChannelId);
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const ChannelNav = () => {
   return (
     <>
       <div className="d-flex mb-2">
-        <span>Каналы</span>
+        <span>{t('channels')}</span>
         <button type="button" className="btn btn-link ml-auto p-0" onClick={handleNewChannelModal}>+</button>
       </div>
       <Nav variant="pills" className="flex-column nav-fill" as="ul">

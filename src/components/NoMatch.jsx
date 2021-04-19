@@ -1,3 +1,7 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-export default () => <h5 className="align-self-center">Ошибка 404 – страница не найдена!</h5>;
+export default () => {
+  const { t } = useTranslation();
+  return (<h5 className="align-self-center">{t('errors.404')}</h5>);
+};

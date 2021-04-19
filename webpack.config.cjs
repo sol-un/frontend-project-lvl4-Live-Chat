@@ -1,7 +1,15 @@
+/* eslint-disable import/no-extraneous-dependencies */
 // @ts-check
 
+const webpack = require('webpack');
+const dotenv = require('dotenv');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const env = dotenv.config().parsed;
+const envKeys = env
+  ? Object.keys(env).reduce((acc, item) => ({ ...acc, [`process.env.${item}`]: JSON.stringify(env[item]) }), {})
+  : {};
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -23,6 +31,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new webpack.DefinePlugin(envKeys),
   ],
   module: {
     rules: [

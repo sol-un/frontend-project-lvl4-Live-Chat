@@ -1,6 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import {
@@ -10,7 +11,11 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
-import { Navbar, Button } from 'react-bootstrap';
+import { Navbar, NavDropdown, Button } from 'react-bootstrap';
+import i18n from 'i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
+import ru from '../locales/ru.js';
+import en from '../locales/en.js';
 import routes from '../routes.js';
 import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpForm.jsx';
@@ -22,6 +27,25 @@ import messagesReducer, { addMessage } from '../slices/messages.js';
 import channelsReducer, { addChannel, renameChannel, removeChannel } from '../slices/channels.js';
 import currentChannelIdReducer from '../slices/currentChannelId.js';
 import uiStateReducer from '../slices/uiState.js';
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      ru,
+      en,
+    },
+    lng: 'ru',
+    fallbackLng: 'ru',
+  });
+
+const ErrorFallback = ({ error, resetErrorBoundary }) => (
+  <div role="alert">
+    <p>Something went wrong:</p>
+    <pre>{error.message}</pre>
+    <button type="button" onClick={resetErrorBoundary}>Try again</button>
+  </div>
+);
 
 const AuthProvider = ({ children }) => {
   const isLoggedIn = _.has(localStorage, 'hexletChatUserId');
@@ -75,8 +99,8 @@ const AuthRoute = ({ children, path }) => {
 
 const LogOutButton = () => {
   const auth = useAuth();
-
-  return auth.loggedIn && <Button className="ml-auto" variant="outline-secondary" onClick={auth.logOut}>Выйти</Button>;
+  const { t } = useTranslation();
+  return auth.loggedIn && <Button className="ml-2" variant="outline-secondary" onClick={auth.logOut}>{t('logout')}</Button>;
 };
 
 const getAuthHeader = () => {
@@ -89,7 +113,7 @@ const getAuthHeader = () => {
   return {};
 };
 
-export default () => {
+export default ({ rollbar }) => {
   const [data, setData] = useState({
     channels: [],
     messages: [],
@@ -131,32 +155,45 @@ export default () => {
   socket.on('renameChannel', (response) => dispatch(renameChannel(response)));
   socket.on('removeChannel', (response) => dispatch(removeChannel(response)));
 
+  const handleSelect = (eventKey) => i18n.changeLanguage(eventKey);
+
+  const logError = (error) => {
+    console.log(error);
+    rollbar.error(error);
+  };
+
   return (
     <div className="d-flex flex-column h-100">
-      <AuthProvider>
-        <Router>
-          <Navbar className="mb-3" expand="lg">
-            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-            <LogOutButton />
-          </Navbar>
-          <Switch>
-            <PrivateRoute exact path="/">
-              <Provider store={store}>
-                <Chat />
-              </Provider>
-            </PrivateRoute>
-            <AuthRoute exact path="/login">
-              <LogInForm />
-            </AuthRoute>
-            <AuthRoute exact path="/signup">
-              <SignUpForm />
-            </AuthRoute>
-            <Route path="*">
-              <NoMatch />
-            </Route>
-          </Switch>
-        </Router>
-      </AuthProvider>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
+        <AuthProvider>
+          <Router>
+            <Navbar className="mb-3" expand="lg">
+              <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+              <NavDropdown className="ml-auto" id="nav-dropdown" title="&#127758;" onSelect={handleSelect}>
+                <NavDropdown.Item eventKey="ru">RU</NavDropdown.Item>
+                <NavDropdown.Item eventKey="en">EN</NavDropdown.Item>
+              </NavDropdown>
+              <LogOutButton />
+            </Navbar>
+            <Switch>
+              <PrivateRoute exact path="/">
+                <Provider store={store}>
+                  <Chat />
+                </Provider>
+              </PrivateRoute>
+              <AuthRoute exact path="/login">
+                <LogInForm />
+              </AuthRoute>
+              <AuthRoute exact path="/signup">
+                <SignUpForm />
+              </AuthRoute>
+              <Route path="*">
+                <NoMatch />
+              </Route>
+            </Switch>
+          </Router>
+        </AuthProvider>
+      </ErrorBoundary>
     </div>
   );
 };

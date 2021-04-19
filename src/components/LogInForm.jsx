@@ -3,12 +3,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
-
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 
 export default () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
   const history = useHistory();
@@ -64,7 +65,7 @@ export default () => {
               return (
                 <Form className="p-3" onSubmit={handleSubmit}>
                   <Form.Group>
-                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                    <Form.Label htmlFor="username">{t('username')}</Form.Label>
                     <Form.Control
                       required
                       onChange={handleChange}
@@ -75,7 +76,7 @@ export default () => {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label htmlFor="password">Пароль</Form.Label>
+                    <Form.Label htmlFor="password">{t('password')}</Form.Label>
                     <Form.Control
                       required
                       type="password"
@@ -84,10 +85,10 @@ export default () => {
                       name="password"
                       isInvalid={authFailed}
                     />
-                    <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">{t('errors.login')}</Form.Control.Feedback>
                     {isNetworkError && (
                       <Form.Text className="text-danger">
-                        Ошибка сети!
+                        {`${t('errors.network')}!`}
                       </Form.Text>
                     )}
                   </Form.Group>
@@ -97,11 +98,11 @@ export default () => {
                     variant="outline-primary"
                     disabled={isSubmitting}
                   >
-                    Войти
+                    {t('login')}
                   </Button>
                   <div className="d-flex flex-column align-items-center">
-                    <span className="small mb-2">Нет аккаунта?</span>
-                    <Link to="/signup">Регистрация</Link>
+                    <span className="small mb-2">{t('noAccount')}</span>
+                    <Link to="/signup">{t('signup')}</Link>
                   </div>
                 </Form>
               );

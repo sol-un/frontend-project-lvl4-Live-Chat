@@ -3,12 +3,14 @@ import { useSelector } from 'react-redux';
 import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSocket } from '../../hooks/index.jsx';
 
 export default ({ modalInfo, onHide }) => {
   const { channelId, channelName } = modalInfo;
+  const { t } = useTranslation();
   const socket = useSocket();
 
   const channels = useSelector((state) => state.channels);
@@ -24,7 +26,7 @@ export default ({ modalInfo, onHide }) => {
       onEntered={() => inputField.current.focus()}
     >
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{`Rename '${channelName}'`}</Modal.Title>
+        <Modal.Title>{t('modals.renaming.header', { channelName })}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -61,20 +63,20 @@ export default ({ modalInfo, onHide }) => {
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <InputGroup>
-                    <Form.Label htmlFor="name" srOnly>Channel name</Form.Label>
+                    <Form.Label htmlFor="name" srOnly>{t('modals.renaming.placeholder', { channelName })}</Form.Label>
                     <Form.Control
                       ref={inputField}
                       id="name"
                       type="text"
                       className="mr-2"
-                      placeholder="Enter channel name..."
+                      placeholder={channelName}
                       value={values.name}
                       isInvalid={isNetworkError}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
                     <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
-                      Create
+                      {t('modals.renaming.rename')}
                     </Button>
                   </InputGroup>
                   {errors.name && (
@@ -84,7 +86,7 @@ export default ({ modalInfo, onHide }) => {
                   )}
                   {isNetworkError && (
                     <Form.Text className="text-danger">
-                      Network error!
+                      {t('errors.network')}
                     </Form.Text>
                   )}
                 </Form.Group>
