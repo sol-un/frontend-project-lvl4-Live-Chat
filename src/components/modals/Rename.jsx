@@ -24,6 +24,7 @@ export default ({ modalInfo, onHide }) => {
     <Modal
       show
       onEntered={() => inputField.current.focus()}
+      onHide={onHide}
     >
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('modals.renaming.header', { channelName })}</Modal.Title>

@@ -15,6 +15,7 @@ export default ({ modalInfo, onHide }) => {
     <Modal
       show
       onEntered={() => cancelButton.current.focus()}
+      onHide={onHide}
     >
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>

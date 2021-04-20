@@ -23,6 +23,7 @@ export default ({ onHide }) => {
     <Modal
       show
       onEntered={() => inputField.current.focus()}
+      onHide={onHide}
     >
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('modals.adding.header')}</Modal.Title>
