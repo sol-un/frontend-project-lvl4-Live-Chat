@@ -16,7 +16,7 @@ export default ({ modalInfo, onHide }) => {
   const channels = useSelector((state) => state.channels);
   const channelNames = channels.map(({ name }) => name);
   const channelNameSchema = yup.object().shape({
-    name: yup.string().required('Имя канала не должно быть пустым!').notOneOf(channelNames, 'Канал с таким именем уже существует.'),
+    name: yup.string().required(t('errors.required')).notOneOf(channelNames, t('errors.channelName')),
   });
 
   const inputField = React.useRef(null);
