@@ -102,7 +102,7 @@ export default () => {
                   </Button>
                   <div className="d-flex flex-column align-items-center">
                     <span className="small mb-2">{t('noAccount')}</span>
-                    <Link to="/signup">{t('signup')}</Link>
+                    <Link to="/signup">{t('signupLink')}</Link>
                   </div>
                 </Form>
               );

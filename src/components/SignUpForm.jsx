@@ -81,7 +81,7 @@ export default () => {
               return (
                 <Form className="p-3" onSubmit={handleSubmit}>
                   <Form.Group>
-                    <Form.Label htmlFor="username">{t('username')}</Form.Label>
+                    <Form.Label htmlFor="username">{t('newUserName')}</Form.Label>
                     <Form.Control
                       required
                       placeholder={t('errors.signup.username')}
@@ -130,7 +130,7 @@ export default () => {
                     variant="outline-primary"
                     disabled={isSubmitting}
                   >
-                    {t('signup')}
+                    {t('signupButton')}
                   </Button>
                 </Form>
               );

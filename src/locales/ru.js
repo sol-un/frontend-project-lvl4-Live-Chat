@@ -2,8 +2,10 @@ export default {
   translation: {
     login: 'Войти',
     logout: 'Выйти',
-    signup: 'Регистрация',
+    signupLink: 'Регистрация',
+    signupButton: 'Зарегистрироваться',
     username: 'Ваш ник',
+    newUserName: 'Имя пользователя',
     password: 'Пароль',
     confirmPassword: 'Подтвердите пароль',
     noAccount: 'Нет аккаунта?',

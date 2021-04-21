@@ -2,8 +2,10 @@ export default {
   translation: {
     login: 'Log in',
     logout: 'Log out',
-    signup: 'Sign up',
+    signupLink: 'Sign up',
+    signupButton: 'Sign up',
     username: 'Username',
+    newUserName: 'Username',
     password: 'Password',
     confirmPassword: 'Confirm Password',
     noAccount: 'Don\'t have an account?',

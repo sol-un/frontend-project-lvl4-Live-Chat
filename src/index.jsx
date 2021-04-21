@@ -6,38 +6,13 @@ import '../assets/application.scss';
 import { io } from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Rollbar from 'rollbar';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import ru from './locales/ru.js';
-import en from './locales/en.js';
+import i18n from './i18n.js';
+import rollbar from './rollbar.js';
 import App from './App.jsx';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      ru,
-      en,
-    },
-    lng: 'ru',
-    fallbackLng: 'ru',
-  });
-
-const rollbar = new Rollbar(
-  {
-    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    payload: {
-      environment: 'production',
-    },
-  },
-);
 
 const socket = io();
 
