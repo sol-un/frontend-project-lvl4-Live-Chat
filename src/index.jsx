@@ -4,41 +4,29 @@ import 'regenerator-runtime/runtime.js';
 import 'core-js/stable/index.js';
 import '../assets/application.scss';
 import { io } from 'socket.io-client';
-import _ from 'lodash';
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { ErrorBoundary } from 'react-error-boundary';
 import Rollbar from 'rollbar';
-import App from './components/App.jsx';
-import { socketContext, authContext } from './contexts/index.jsx';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import ru from './locales/ru.js';
+import en from './locales/en.js';
+import App from './App.jsx';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-const AuthProvider = ({ children }) => {
-  const isLoggedIn = _.has(localStorage, 'hexletChatUserId');
-  const [loggedIn, setLoggedIn] = useState(isLoggedIn);
-  const [username, setUsername] = useState(null);
-
-  const logIn = (name) => {
-    setUsername(name);
-    setLoggedIn(true);
-  };
-  const logOut = () => {
-    localStorage.removeItem('hexletChatUserId');
-    setLoggedIn(false);
-  };
-
-  return (
-    <authContext.Provider value={{
-      username, loggedIn, logIn, logOut,
-    }}
-    >
-      {children}
-    </authContext.Provider>
-  );
-};
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      ru,
+      en,
+    },
+    lng: 'ru',
+    fallbackLng: 'ru',
+  });
 
 const rollbar = new Rollbar(
   {
@@ -51,29 +39,7 @@ const rollbar = new Rollbar(
   },
 );
 
-const logError = (error) => {
-  console.log(error);
-  rollbar.error(error);
-};
-
-const ErrorFallback = ({ error, resetErrorBoundary }) => (
-  <div role="alert">
-    <p>Something went wrong:</p>
-    <pre>{error.message}</pre>
-    <button type="button" onClick={resetErrorBoundary}>Try again</button>
-  </div>
-);
-
 const socket = io();
 
 const container = document.querySelector('#chat');
-ReactDOM.render(
-  <ErrorBoundary FallbackComponent={ErrorFallback} onError={logError}>
-    <AuthProvider>
-      <socketContext.Provider value={socket}>
-        <App />
-      </socketContext.Provider>
-    </AuthProvider>
-  </ErrorBoundary>,
-  container,
-);
+ReactDOM.render(<App socket={socket} rollbar={rollbar} i18n={i18n} />, container);

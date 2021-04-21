@@ -10,10 +10,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Navbar, NavDropdown, Button } from 'react-bootstrap';
-import i18n from 'i18next';
-import { initReactI18next, useTranslation } from 'react-i18next';
-import ru from '../locales/ru.js';
-import en from '../locales/en.js';
+import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
 import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpForm.jsx';
@@ -24,17 +21,6 @@ import messagesReducer, { addMessage } from '../slices/messages.js';
 import channelsReducer, { addChannel, renameChannel, removeChannel } from '../slices/channels.js';
 import currentChannelIdReducer from '../slices/currentChannelId.js';
 import uiStateReducer from '../slices/uiState.js';
-
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      ru,
-      en,
-    },
-    lng: 'ru',
-    fallbackLng: 'ru',
-  });
 
 const PrivateRoute = ({ children, path }) => {
   const auth = useAuth();
@@ -78,7 +64,7 @@ const getAuthHeader = () => {
   return {};
 };
 
-export default () => {
+export default ({ i18n }) => {
   const [data, setData] = useState({
     channels: [],
     messages: [],
