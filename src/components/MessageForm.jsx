@@ -36,7 +36,6 @@ const MessageForm = () => {
             resetForm();
           });
         } else {
-          console.log('Socket not connected!');
           setStatus({ networkError: true });
         }
         setSubmitting(false);
