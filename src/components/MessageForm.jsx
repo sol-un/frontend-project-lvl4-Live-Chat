@@ -56,7 +56,6 @@ const MessageForm = () => {
                 <Form.Label htmlFor="message" srOnly>{t('message')}</Form.Label>
                 <Form.Control
                   id="message"
-                  aria-label="message"
                   type="text"
                   autoComplete="off"
                   className="mr-2"
@@ -64,12 +63,13 @@ const MessageForm = () => {
                   isInvalid={isNetworkError}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  aria-label="body"
                 />
                 <Button
-                  aria-label="submit"
                   variant="primary"
                   type="submit"
                   disabled={!isValid || isSubmitting}
+                  aria-label="отправить"
                 >
                   {t('send')}
                 </Button>

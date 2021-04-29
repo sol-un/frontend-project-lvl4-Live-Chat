@@ -27,10 +27,10 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export default ({ socket, i18n }) => (
+export default ({ socket }) => (
   <AuthProvider>
     <socketContext.Provider value={socket}>
-      <Main i18n={i18n} />
+      <Main />
     </socketContext.Provider>
   </AuthProvider>
 );
