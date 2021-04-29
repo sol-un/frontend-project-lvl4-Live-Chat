@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { Navbar, NavDropdown, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import i18n from '../i18n.js';
 import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpForm.jsx';
 import Chat from './Chat.jsx';
@@ -46,7 +47,7 @@ const LogOutButton = () => {
   return auth.loggedIn && <Button className="ml-2" variant="outline-secondary" onClick={auth.logOut}>{t('logout')}</Button>;
 };
 
-export default ({ i18n }) => {
+export default () => {
   const handleSelect = (eventKey) => i18n.changeLanguage(eventKey);
 
   return (
