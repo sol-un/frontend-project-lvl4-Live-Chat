@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Modal, Form, Button, InputGroup,
@@ -19,7 +19,7 @@ export default ({ modalInfo, onHide }) => {
     name: yup.string().required(t('errors.required')).notOneOf(channelNames, t('errors.channelName')),
   });
 
-  const inputField = React.useRef(null);
+  const inputField = useRef(null);
   return (
     <Modal
       show

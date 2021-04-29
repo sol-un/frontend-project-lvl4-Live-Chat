@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Form, Button, InputGroup,
@@ -11,13 +11,17 @@ import { authContext } from '../contexts/index.jsx';
 
 const MessageForm = () => {
   const { t } = useTranslation();
-
   const messageSchema = yup.object().shape({
     message: yup.string().required(t('errors.required')),
   });
 
   const { username } = useContext(authContext);
   const currentChannelId = useSelector((state) => state.currentChannelId);
+  const inputField = useRef(null);
+  useEffect(
+    () => inputField.current.focus(),
+    [currentChannelId],
+  );
   const socket = useSocket();
   return (
     <Formik
@@ -32,6 +36,7 @@ const MessageForm = () => {
             resetForm();
           });
         } else {
+          console.log('Socket not connected!');
           setStatus({ networkError: true });
         }
         setSubmitting(false);
@@ -55,6 +60,7 @@ const MessageForm = () => {
               <InputGroup>
                 <Form.Label htmlFor="message" srOnly>{t('message')}</Form.Label>
                 <Form.Control
+                  ref={inputField}
                   id="message"
                   type="text"
                   autoComplete="off"

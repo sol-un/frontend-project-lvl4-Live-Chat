@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
@@ -10,7 +10,7 @@ export default ({ modalInfo, onHide }) => {
   const { channelId, channelName } = modalInfo;
   const { t } = useTranslation();
   const socket = useSocket();
-  const cancelButton = React.useRef(null);
+  const cancelButton = useRef(null);
   return (
     <Modal
       show

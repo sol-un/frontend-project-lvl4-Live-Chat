@@ -13,7 +13,7 @@ export default () => {
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
   const history = useHistory();
-  const inputRef = useRef();
+  const inputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current.focus();
