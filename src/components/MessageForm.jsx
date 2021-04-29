@@ -69,6 +69,7 @@ const MessageForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   aria-label="body"
+                  data-testid="new-message"
                 />
                 <Button
                   variant="primary"
