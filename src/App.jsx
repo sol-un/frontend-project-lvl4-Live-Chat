@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
-import { socketContext, authContext } from './contexts/index.jsx';
+import { authContext } from './contexts/index.jsx';
 import Main from './components/Main.jsx';
 
 const AuthProvider = ({ children }) => {
@@ -27,10 +27,8 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export default ({ socket }) => (
+export default () => (
   <AuthProvider>
-    <socketContext.Provider value={socket}>
-      <Main />
-    </socketContext.Provider>
+    <Main />
   </AuthProvider>
 );
