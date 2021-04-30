@@ -22,7 +22,7 @@ const store = configureStore({
 
 const { dispatch } = store;
 
-export default (socket) => {
+const init = (socket) => {
   socket.on('newMessage', (response) => dispatch(addMessage(response)));
   socket.on('newChannel', (response) => dispatch(addChannel(response)));
   socket.on('renameChannel', (response) => dispatch(renameChannel(response)));
@@ -36,3 +36,5 @@ export default (socket) => {
     </Provider>
   );
 };
+
+export default init;

@@ -27,8 +27,10 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export default () => (
+const App = () => (
   <AuthProvider>
     <Main />
   </AuthProvider>
 );
+
+export default App;

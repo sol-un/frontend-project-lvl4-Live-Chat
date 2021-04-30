@@ -46,7 +46,7 @@ const LogOutButton = () => {
   return auth.loggedIn && <Button className="ml-2" variant="outline-secondary" onClick={auth.logOut}>{t('logout')}</Button>;
 };
 
-export default () => {
+const Main = () => {
   const { i18n } = useTranslation();
   const handleSelect = (eventKey) => i18n.changeLanguage(eventKey);
 
@@ -80,3 +80,5 @@ export default () => {
     </div>
   );
 };
+
+export default Main;

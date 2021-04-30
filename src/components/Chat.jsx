@@ -33,7 +33,7 @@ const renderModal = ({ uiState, onHide }) => {
   return <Component modalInfo={uiState} onHide={onHide} />;
 };
 
-export default () => {
+const Chat = () => {
   const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const uiState = useSelector((state) => state.uiState);
@@ -57,7 +57,7 @@ export default () => {
       console.error(error);
       throw error;
     }
-  }, []);
+  }, [dispatch]);
   return (
     <Loader loaded={isLoaded}>
       {renderModal({ uiState, onHide })}
@@ -73,3 +73,5 @@ export default () => {
     </Loader>
   );
 };
+
+export default Chat;

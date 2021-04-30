@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 
-export default () => {
+const LogInForm = () => {
   const auth = useAuth();
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
@@ -113,3 +113,5 @@ export default () => {
     </div>
   );
 };
+
+export default LogInForm;

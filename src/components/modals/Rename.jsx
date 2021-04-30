@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSocket } from '../../hooks/index.jsx';
 
-export default ({ modalInfo, onHide }) => {
+const Rename = ({ modalInfo, onHide }) => {
   const { channelId, channelName } = modalInfo;
   const { t } = useTranslation();
   const socket = useSocket();
@@ -99,3 +99,5 @@ export default ({ modalInfo, onHide }) => {
     </Modal>
   );
 };
+
+export default Rename;

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import { useSocket } from '../../hooks/index.jsx';
 
-export default ({ modalInfo, onHide }) => {
+const Remove = ({ modalInfo, onHide }) => {
   const { channelId, channelName } = modalInfo;
   const { t } = useTranslation();
   const socket = useSocket();
@@ -73,3 +73,5 @@ export default ({ modalInfo, onHide }) => {
     </Modal>
   );
 };
+
+export default Remove;

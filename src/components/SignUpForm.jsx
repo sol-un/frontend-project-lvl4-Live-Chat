@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 
-export default () => {
+const SignUpForm = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
@@ -141,3 +141,5 @@ export default () => {
     </div>
   );
 };
+
+export default SignUpForm;

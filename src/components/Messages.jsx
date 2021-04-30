@@ -13,15 +13,17 @@ const Messages = () => {
   const currentChannelMessages = messages
     .filter(({ channelId }) => channelId === currentChannelId);
   return (
-    <div id="message-container" className="overflow-auto mb-3">
-      {currentChannelMessages.map(({ id, username, message }) => (
-        <p key={id}>
-          <b>
-            {`${username}: `}
-          </b>
-          {message}
-        </p>
-      ))}
+    <div className="d-flex flex-column h-100">
+      <div id="message-container" className="overflow-auto mb-3">
+        {currentChannelMessages.map(({ id, username, message }) => (
+          <p key={id}>
+            <b>
+              {`${username}: `}
+            </b>
+            {message}
+          </p>
+        ))}
+      </div>
     </div>
   );
 };
