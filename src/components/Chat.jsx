@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import Loader from 'react-loader';
+import Loader from 'react-loader';
 import {
   Row, Col,
 } from 'react-bootstrap';
@@ -34,7 +34,7 @@ const renderModal = ({ uiState, onHide }) => {
 };
 
 export default () => {
-  // const [isLoaded, setLoaded] = useState(false);
+  const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const uiState = useSelector((state) => state.uiState);
   const onHide = () => dispatch(hideModal());
@@ -49,7 +49,7 @@ export default () => {
       const { channels, messages } = res.data;
       dispatch(addChannels(channels));
       dispatch(addMessages(messages));
-      // setLoaded(true);
+      setLoaded(true);
     }
     try {
       getData();
@@ -59,8 +59,7 @@ export default () => {
     }
   }, []);
   return (
-    // <Loader loaded={isLoaded}>
-    <>
+    <Loader loaded={isLoaded}>
       {renderModal({ uiState, onHide })}
       <Row className="flex-grow-1 h-75 pb-3">
         <Col className="border-right" xs={3}>
@@ -71,7 +70,6 @@ export default () => {
           <MessageForm />
         </Col>
       </Row>
-    </>
-    // </Loader>
+    </Loader>
   );
 };
