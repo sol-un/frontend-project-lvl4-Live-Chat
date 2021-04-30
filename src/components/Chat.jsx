@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Loader from 'react-loader';
 import {
   Row, Col,
 } from 'react-bootstrap';
@@ -33,6 +34,7 @@ const renderModal = ({ uiState, onHide }) => {
 };
 
 export default () => {
+  const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const uiState = useSelector((state) => state.uiState);
   const onHide = () => dispatch(hideModal());
@@ -47,6 +49,7 @@ export default () => {
       const { channels, messages } = res.data;
       dispatch(addChannels(channels));
       dispatch(addMessages(messages));
+      setLoaded(true);
     }
     try {
       getData();
@@ -56,17 +59,17 @@ export default () => {
     }
   }, []);
   return (
-    <>
+    <Loader loaded={isLoaded}>
       {renderModal({ uiState, onHide })}
-      <Row className="h-100 pb-3">
+      <Row className="flex-grow-1 h-75 pb-3">
         <Col className="border-right" xs={3}>
           <ChannelNav />
         </Col>
-        <Col className="d-flex flex-column justify-content-end h-100">
+        <Col className="h-100">
           <Messages />
           <MessageForm />
         </Col>
       </Row>
-    </>
+    </Loader>
   );
 };

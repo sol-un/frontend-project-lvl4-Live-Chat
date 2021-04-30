@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom';
 import { Navbar, NavDropdown, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import i18n from '../i18n.js';
 import LogInForm from './LogInForm.jsx';
 import SignUpForm from './SignUpForm.jsx';
 import Chat from './Chat.jsx';
@@ -48,6 +47,7 @@ const LogOutButton = () => {
 };
 
 export default () => {
+  const { i18n } = useTranslation();
   const handleSelect = (eventKey) => i18n.changeLanguage(eventKey);
 
   return (

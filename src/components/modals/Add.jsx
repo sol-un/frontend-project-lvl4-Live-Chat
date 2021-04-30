@@ -74,7 +74,7 @@ export default ({ onHide }) => {
                       isInvalid={isNetworkError}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      aria-label="add channel"
+                      data-testid="add-channel"
                     />
                     <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
                       {t('modals.adding.create')}
