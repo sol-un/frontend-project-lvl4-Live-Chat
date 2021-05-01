@@ -76,7 +76,6 @@ const Main = () => {
           </Route>
         </Switch>
       </Router>
-
     </div>
   );
 };

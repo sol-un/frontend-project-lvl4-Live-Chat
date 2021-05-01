@@ -59,15 +59,17 @@ const Chat = () => {
     }
   }, [dispatch]);
   return (
-    <Loader loaded={isLoaded}>
-      {renderModal({ uiState, onHide })}
-      <Row className="flex-grow-1 h-75 pb-3">
+    <Loader loadedClassName="h-100" loaded={isLoaded}>
+      { renderModal({ uiState, onHide })}
+      <Row className="flex-grow-1 h-100 pb-3">
         <Col className="border-right" xs={3}>
           <ChannelNav />
         </Col>
         <Col className="h-100">
-          <Messages />
-          <MessageForm />
+          <div className="d-flex flex-column h-100">
+            <Messages />
+            <MessageForm />
+          </div>
         </Col>
       </Row>
     </Loader>

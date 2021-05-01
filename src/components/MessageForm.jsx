@@ -54,49 +54,51 @@ const MessageForm = () => {
         } = props;
         const isNetworkError = status.networkError;
         return (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <InputGroup>
-                <Form.Label htmlFor="message" srOnly>{t('message')}</Form.Label>
-                <Form.Control
-                  ref={inputField}
-                  id="message"
-                  type="text"
-                  autoComplete="off"
-                  className="mr-2"
-                  value={values.message}
-                  isInvalid={isNetworkError}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  aria-label="body"
-                  data-testid="new-message"
-                />
-                <Button
-                  variant="primary"
-                  type="submit"
-                  disabled={!isValid || isSubmitting}
-                  aria-label="отправить"
-                >
-                  {t('send')}
-                </Button>
-              </InputGroup>
-              {errors.message && (
-                <Form.Text className="text-muted">
-                  {errors.message}
-                </Form.Text>
-              )}
-              {isNetworkError && (
-                <Form.Text className="text-danger">
-                  {t('errors.network')}
-                </Form.Text>
-              )}
-              {isValid && !isNetworkError && (
-                <Form.Text>
-                  &nbsp;
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Form>
+          <div className="mt-auto">
+            <Form onSubmit={handleSubmit}>
+              <Form.Group>
+                <InputGroup>
+                  <Form.Label htmlFor="message" srOnly>{t('message')}</Form.Label>
+                  <Form.Control
+                    ref={inputField}
+                    id="message"
+                    type="text"
+                    autoComplete="off"
+                    className="mr-2"
+                    value={values.message}
+                    isInvalid={isNetworkError}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-label="body"
+                    data-testid="new-message"
+                  />
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={!isValid || isSubmitting}
+                    aria-label="отправить"
+                  >
+                    {t('send')}
+                  </Button>
+                </InputGroup>
+                {errors.message && (
+                  <Form.Text className="text-muted">
+                    {errors.message}
+                  </Form.Text>
+                )}
+                {isNetworkError && (
+                  <Form.Text className="text-danger">
+                    {t('errors.network')}
+                  </Form.Text>
+                )}
+                {isValid && !isNetworkError && (
+                  <Form.Text>
+                    &nbsp;
+                  </Form.Text>
+                )}
+              </Form.Group>
+            </Form>
+          </div>
         );
       }}
     </Formik>
