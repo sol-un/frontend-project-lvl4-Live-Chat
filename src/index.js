@@ -7,7 +7,6 @@ import '../assets/application.scss';
 import { io } from 'socket.io-client';
 import ReactDOM from 'react-dom';
 import Rollbar from 'rollbar';
-import './i18n.js';
 import init from '../index.js';
 
 const rollbar = new Rollbar( // eslint-disable-line no-unused-vars
