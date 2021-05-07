@@ -49,7 +49,7 @@ const SignUpForm = () => {
                 setStatus({ networkError: false });
 
                 const { username, token } = res.data;
-                localStorage.setItem('hexletChatUserId', JSON.stringify(token));
+                auth.saveUserId(token);
                 auth.logIn(username);
 
                 const { from } = { pathname: '/' };

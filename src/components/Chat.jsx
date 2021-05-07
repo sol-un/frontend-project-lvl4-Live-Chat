@@ -13,24 +13,16 @@ import { addMessages } from '../slices/messages.js';
 import { hideModal } from '../slices/uiState.js';
 import Modal from './modals/Modal.jsx';
 import routes from '../routes.js';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('hexletChatUserId'));
-
-  if (userId) {
-    return { Authorization: `Bearer ${userId}` };
-  }
-
-  return {};
-};
+import { useAuth } from '../hooks/index.jsx';
 
 const Chat = () => {
   const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const uiState = useSelector((state) => state.uiState);
   const onHide = () => dispatch(hideModal());
+  const auth = useAuth();
   useEffect(() => {
-    const authHeader = getAuthHeader();
+    const authHeader = auth.getAuthHeader();
     async function getData() {
       const res = await axios({
         method: 'get',

@@ -6,20 +6,39 @@ import Main from './components/Main.jsx';
 const AuthProvider = ({ children }) => {
   const isLoggedIn = _.has(localStorage, 'hexletChatUserId');
   const [loggedIn, setLoggedIn] = useState(isLoggedIn);
-  const [username, setUsername] = useState(null);
+
+  const getAuthHeader = () => {
+    const userId = JSON.parse(localStorage.getItem('hexletChatUserId'));
+
+    if (userId) {
+      return { Authorization: `Bearer ${userId}` };
+    }
+
+    return {};
+  };
+
+  const getUserName = () => JSON.parse(localStorage.getItem('hexletChatUserName'));
+
+  const saveUserId = (token) => localStorage.setItem('hexletChatUserId', JSON.stringify(token));
 
   const logIn = (name) => {
-    setUsername(name);
+    localStorage.setItem('hexletChatUserName', JSON.stringify(name));
     setLoggedIn(true);
   };
   const logOut = () => {
     localStorage.removeItem('hexletChatUserId');
+    localStorage.removeItem('hexletChatUserName');
     setLoggedIn(false);
   };
 
   return (
     <authContext.Provider value={{
-      username, loggedIn, logIn, logOut,
+      username: getUserName(),
+      getAuthHeader,
+      saveUserId,
+      loggedIn,
+      logIn,
+      logOut,
     }}
     >
       {children}
