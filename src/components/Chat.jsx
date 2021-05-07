@@ -23,7 +23,7 @@ const Chat = () => {
   const auth = useAuth();
   useEffect(() => {
     const authHeader = auth.getAuthHeader();
-    async function getData() {
+    const getData = async () => {
       const res = await axios({
         method: 'get',
         url: routes.dataPath(),
@@ -33,7 +33,7 @@ const Chat = () => {
       dispatch(addChannels(channels));
       dispatch(addMessages(messages));
       setLoaded(true);
-    }
+    };
     try {
       getData();
     } catch (error) {
