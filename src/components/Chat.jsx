@@ -1,17 +1,17 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Loader from 'react-loader';
 import {
   Row, Col,
 } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
 import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 import { addChannels } from '../slices/channels.js';
 import { addMessages } from '../slices/messages.js';
 import { hideModal } from '../slices/uiState.js';
-import getModal from './modals/index.js';
+import Modal from './modals/Modal.jsx';
 import routes from '../routes.js';
 
 const getAuthHeader = () => {
@@ -22,15 +22,6 @@ const getAuthHeader = () => {
   }
 
   return {};
-};
-
-const renderModal = ({ uiState, onHide }) => {
-  if (!uiState.type) {
-    return null;
-  }
-
-  const Component = getModal(uiState.type);
-  return <Component modalInfo={uiState} onHide={onHide} />;
 };
 
 const Chat = () => {
@@ -58,22 +49,28 @@ const Chat = () => {
       throw error;
     }
   }, [dispatch]);
-  return (
-    <Loader loadedClassName="h-100" loaded={isLoaded}>
-      { renderModal({ uiState, onHide })}
-      <Row className="flex-grow-1 h-100 pb-3">
-        <Col className="border-right" xs={3}>
-          <ChannelNav />
-        </Col>
-        <Col className="h-100">
-          <div className="d-flex flex-column h-100">
-            <Messages />
-            <MessageForm />
-          </div>
-        </Col>
-      </Row>
-    </Loader>
-  );
+  return isLoaded
+    ? (
+      <>
+        <Modal uiState={uiState} onHide={onHide} />
+        <Row className="flex-grow-1 h-100 pb-3">
+          <Col className="border-right" xs={3}>
+            <ChannelNav />
+          </Col>
+          <Col className="h-100">
+            <div className="d-flex flex-column h-100">
+              <Messages />
+              <MessageForm />
+            </div>
+          </Col>
+        </Row>
+      </>
+    )
+    : (
+      <Spinner className="mx-auto my-auto" animation="grow" variant="primary" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
 };
 
 export default Chat;
