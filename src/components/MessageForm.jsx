@@ -11,6 +11,8 @@ import { authContext } from '../contexts/index.jsx';
 
 const MessageForm = () => {
   const { t } = useTranslation();
+  const { sendMessageSocketWrapper } = useSocket();
+
   const messageSchema = yup.object().shape({
     message: yup.string().required(t('errors.required')),
   });
@@ -18,11 +20,12 @@ const MessageForm = () => {
   const { username } = useContext(authContext);
   const currentChannelId = useSelector((state) => state.currentChannelId);
   const inputField = useRef(null);
+
   useEffect(
     () => inputField.current.focus(),
     [currentChannelId],
   );
-  const socket = useSocket();
+
   return (
     <Formik
       initialValues={{ message: '' }}
@@ -30,12 +33,11 @@ const MessageForm = () => {
       validationSchema={messageSchema}
       validateOnBlur={false}
       onSubmit={({ message }, { setSubmitting, resetForm, setStatus }) => {
-        if (socket.connected) {
-          socket.emit('newMessage', { username, message, channelId: currentChannelId }, () => {
-            setStatus({ networkError: false });
-            resetForm();
-          });
-        } else {
+        try {
+          sendMessageSocketWrapper({ username, message, channelId: currentChannelId });
+          setStatus({ networkError: false });
+          resetForm();
+        } catch (error) {
           setStatus({ networkError: true });
         }
         setSubmitting(false);

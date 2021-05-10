@@ -9,10 +9,10 @@ import * as yup from 'yup';
 import { useSocket } from '../../hooks/index.jsx';
 
 const Rename = ({ modalInfo, onHide }) => {
-  const { channelId, channelName } = modalInfo;
   const { t } = useTranslation();
-  const socket = useSocket();
+  const { renameChannelSocketWrapper } = useSocket();
 
+  const { channelId, channelName } = modalInfo;
   const channels = useSelector((state) => state.channels);
   const channelNames = channels.map(({ name }) => name);
   const channelNameSchema = yup.object().shape({
@@ -37,13 +37,12 @@ const Rename = ({ modalInfo, onHide }) => {
           validationSchema={channelNameSchema}
           validateOnBlur={false}
           onSubmit={({ name }, { setSubmitting, resetForm, setStatus }) => {
-            if (socket.connected) {
-              socket.emit('renameChannel', { name, id: channelId }, () => {
-                setStatus({ networkError: false });
-                resetForm();
-                onHide();
-              });
-            } else {
+            try {
+              renameChannelSocketWrapper({ name, id: channelId });
+              setStatus({ networkError: false });
+              onHide();
+              resetForm();
+            } catch (error) {
               setStatus({ networkError: true });
             }
             setSubmitting(false);

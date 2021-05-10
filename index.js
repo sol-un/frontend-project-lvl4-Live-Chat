@@ -38,6 +38,52 @@ const init = (socket) => {
 
   const { dispatch } = store;
 
+  const SocketProvider = ({ children }) => {
+    const sendMessageSocketWrapper = (data) => {
+      if (socket.connected) {
+        socket.emit('newMessage', data, () => {});
+      } else {
+        throw new Error('Network error!');
+      }
+    };
+
+    const addChannelSocketWrapper = (data) => {
+      if (socket.connected) {
+        socket.emit('newChannel', data, () => {});
+      } else {
+        throw new Error('Network error!');
+      }
+    };
+
+    const removeChannelSocketWrapper = (data) => {
+      if (socket.connected) {
+        socket.emit('removeChannel', data, () => {});
+      } else {
+        throw new Error('Network error!');
+      }
+    };
+
+    const renameChannelSocketWrapper = (data) => {
+      if (socket.connected) {
+        socket.emit('renameChannel', data, () => {});
+      } else {
+        throw new Error('Network error!');
+      }
+    };
+
+    return (
+      <socketContext.Provider value={{
+        sendMessageSocketWrapper,
+        addChannelSocketWrapper,
+        removeChannelSocketWrapper,
+        renameChannelSocketWrapper,
+      }}
+      >
+        {children}
+      </socketContext.Provider>
+    );
+  };
+
   socket.on('newMessage', (response) => dispatch(addMessage(response)));
   socket.on('newChannel', (response) => dispatch(addChannel(response)));
   socket.on('renameChannel', (response) => dispatch(renameChannel(response)));
@@ -45,11 +91,11 @@ const init = (socket) => {
 
   return (
     <Provider store={store}>
-      <socketContext.Provider value={socket}>
+      <SocketProvider>
         <I18nextProvider i18n={i18nextInstance}>
           <App />
         </I18nextProvider>
-      </socketContext.Provider>
+      </SocketProvider>
     </Provider>
   );
 };

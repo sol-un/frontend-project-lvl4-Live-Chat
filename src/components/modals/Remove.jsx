@@ -7,9 +7,10 @@ import { Formik } from 'formik';
 import { useSocket } from '../../hooks/index.jsx';
 
 const Remove = ({ modalInfo, onHide }) => {
-  const { channelId, channelName } = modalInfo;
   const { t } = useTranslation();
-  const socket = useSocket();
+  const { removeChannelSocketWrapper } = useSocket();
+
+  const { channelId, channelName } = modalInfo;
   const cancelButton = useRef(null);
   return (
     <Modal
@@ -33,12 +34,11 @@ const Remove = ({ modalInfo, onHide }) => {
           initialValues={{}}
           initialStatus={{ networkError: false }}
           onSubmit={(_values, { setSubmitting, setStatus }) => {
-            if (socket.connected) {
-              socket.emit('removeChannel', { id: channelId }, () => {
-                setStatus({ networkError: false });
-                onHide();
-              });
-            } else {
+            try {
+              removeChannelSocketWrapper({ id: channelId });
+              setStatus({ networkError: false });
+              onHide();
+            } catch (error) {
               setStatus({ networkError: true });
             }
             setSubmitting(false);

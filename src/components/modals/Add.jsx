@@ -10,7 +10,7 @@ import { useSocket } from '../../hooks/index.jsx';
 
 const Add = ({ onHide }) => {
   const { t } = useTranslation();
-  const socket = useSocket();
+  const { addChannelSocketWrapper } = useSocket();
 
   const channels = useSelector((state) => state.channels);
   const channelNames = channels.map(({ name }) => name);
@@ -36,13 +36,12 @@ const Add = ({ onHide }) => {
           validationSchema={channelNameSchema}
           validateOnBlur={false}
           onSubmit={({ name }, { setSubmitting, resetForm, setStatus }) => {
-            if (socket.connected) {
-              socket.emit('newChannel', { name }, () => {
-                setStatus({ networkError: false });
-                resetForm();
-                onHide();
-              });
-            } else {
+            try {
+              addChannelSocketWrapper({ name });
+              setStatus({ networkError: false });
+              onHide();
+              resetForm();
+            } catch (error) {
               setStatus({ networkError: true });
             }
             setSubmitting(false);
