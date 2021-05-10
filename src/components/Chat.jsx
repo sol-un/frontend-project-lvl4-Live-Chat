@@ -8,8 +8,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
-import { addChannels } from '../slices/channels.js';
-import { addMessages } from '../slices/messages.js';
+import { setInitialData } from '../slices/channels.js';
 import { hideModal } from '../slices/uiState.js';
 import Modal from './modals/Modal.jsx';
 import routes from '../routes.js';
@@ -29,9 +28,7 @@ const Chat = () => {
         url: routes.dataPath(),
         headers: authHeader,
       });
-      const { channels, messages } = res.data;
-      dispatch(addChannels(channels));
-      dispatch(addMessages(messages));
+      dispatch(setInitialData(res.data));
       setLoaded(true);
     };
     try {

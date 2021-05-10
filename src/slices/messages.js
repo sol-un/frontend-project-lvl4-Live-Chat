@@ -1,20 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { removeChannel } from './channels.js';
+import { setInitialData, removeChannel } from './channels.js';
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: [],
   reducers: {
-    addMessages(state, action) {
-      return action.payload;
-    },
     addMessage(state, action) {
       const { payload } = action;
       state.push(payload);
     },
   },
   extraReducers: {
+    [setInitialData]: (state, action) => action.payload.messages,
     [removeChannel]: (state, action) => {
       const { payload } = action;
       const channelId = Number(payload.id);
@@ -24,5 +21,5 @@ const messagesSlice = createSlice({
 });
 
 const { reducer, actions } = messagesSlice;
-export const { addMessages, addMessage } = actions;
+export const { addMessage } = actions;
 export default reducer;
