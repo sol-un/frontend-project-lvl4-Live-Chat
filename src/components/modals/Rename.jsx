@@ -10,7 +10,7 @@ import { useSocket } from '../../hooks/index.jsx';
 
 const Rename = ({ modalInfo, onHide }) => {
   const { t } = useTranslation();
-  const { renameChannelSocketWrapper } = useSocket();
+  const emitSocketEvent = useSocket();
 
   const { channelId, channelName } = modalInfo;
   const channels = useSelector((state) => state.channels);
@@ -38,7 +38,7 @@ const Rename = ({ modalInfo, onHide }) => {
           validateOnBlur={false}
           onSubmit={({ name }, { setSubmitting, resetForm, setStatus }) => {
             try {
-              renameChannelSocketWrapper({ name, id: channelId });
+              emitSocketEvent('renameChannel', { name, id: channelId });
               setStatus({ networkError: false });
               onHide();
               resetForm();

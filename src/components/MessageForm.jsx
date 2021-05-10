@@ -11,7 +11,7 @@ import { authContext } from '../contexts/index.jsx';
 
 const MessageForm = () => {
   const { t } = useTranslation();
-  const { sendMessageSocketWrapper } = useSocket();
+  const emitSocketEvent = useSocket();
 
   const messageSchema = yup.object().shape({
     message: yup.string().required(t('errors.required')),
@@ -34,7 +34,7 @@ const MessageForm = () => {
       validateOnBlur={false}
       onSubmit={({ message }, { setSubmitting, resetForm, setStatus }) => {
         try {
-          sendMessageSocketWrapper({ username, message, channelId: currentChannelId });
+          emitSocketEvent('newMessage', { username, message, channelId: currentChannelId });
           setStatus({ networkError: false });
           resetForm();
         } catch (error) {
