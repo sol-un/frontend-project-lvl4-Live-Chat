@@ -1,9 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // @ts-check
 
+const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const dotenv = require('dotenv');
 const Dotenv = require('dotenv-webpack');
+
+dotenv.config();
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -25,7 +29,19 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new Dotenv(),
+    (function () {
+      switch (mode) {
+        case 'development':
+          return new Dotenv();
+        case 'production': {
+          return new webpack.DefinePlugin({
+            'process.env.ROLLBAR_ACCESS_TOKEN': JSON.stringify(process.env.ROLLBAR_ACCESS_TOKEN),
+          });
+        }
+        default:
+          throw new Error(`Unknown environment variable: ${mode}!`);
+      }
+    }()),
   ],
   module: {
     rules: [

@@ -15,6 +15,7 @@ import uiStateReducer from './src/slices/uiState.js';
 import { socketContext } from './src/contexts/index.jsx';
 
 const init = (socket) => {
+  console.log(process.env.ROLLBAR_ACCESS_TOKEN);
   const i18nextInstance = i18next.createInstance();
   i18nextInstance
     .use(initReactI18next)
