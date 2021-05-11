@@ -58,22 +58,22 @@ const MessageForm = () => {
         return (
           <div className="mt-auto">
             <Form onSubmit={handleSubmit}>
-              <Form.Group>
-                <InputGroup>
-                  <Form.Label htmlFor="message" srOnly>{t('message')}</Form.Label>
-                  <Form.Control
-                    ref={inputField}
-                    id="message"
-                    type="text"
-                    autoComplete="off"
-                    className="mr-2"
-                    value={values.message}
-                    isInvalid={isNetworkError}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    aria-label="body"
-                    data-testid="new-message"
-                  />
+              <InputGroup>
+                <Form.Label htmlFor="message" srOnly>{t('message')}</Form.Label>
+                <Form.Control
+                  className="rounded-left"
+                  ref={inputField}
+                  id="message"
+                  type="text"
+                  autoComplete="off"
+                  value={values.message}
+                  isInvalid={isNetworkError}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  aria-label="body"
+                  data-testid="new-message"
+                />
+                <InputGroup.Append>
                   <Button
                     variant="primary"
                     type="submit"
@@ -82,23 +82,18 @@ const MessageForm = () => {
                   >
                     {t('send')}
                   </Button>
-                </InputGroup>
-                {errors.message && (
-                  <Form.Text className="text-muted">
-                    {errors.message}
-                  </Form.Text>
-                )}
-                {isNetworkError && (
-                  <Form.Text className="text-danger">
-                    {t('errors.network')}
-                  </Form.Text>
-                )}
-                {isValid && !isNetworkError && (
-                  <Form.Text>
-                    &nbsp;
-                  </Form.Text>
-                )}
-              </Form.Group>
+                </InputGroup.Append>
+              </InputGroup>
+              {errors.message && (
+                <Form.Text className="text-muted">
+                  {errors.message}
+                </Form.Text>
+              )}
+              {isNetworkError && (
+                <Form.Text className="text-danger">
+                  {t('errors.network')}
+                </Form.Text>
+              )}
             </Form>
           </div>
         );

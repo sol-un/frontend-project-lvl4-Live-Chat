@@ -42,7 +42,7 @@ const Chat = () => {
     ? (
       <>
         <Modal uiState={uiState} onHide={onHide} />
-        <Row className="flex-grow-1 h-100 pb-3">
+        <Row className="flex-grow-1 h-75 pb-3">
           <Col className="border-right" xs={3}>
             <ChannelNav />
           </Col>
