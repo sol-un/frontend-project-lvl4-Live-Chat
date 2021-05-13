@@ -83,10 +83,14 @@ const LogInForm = () => {
                       name="password"
                       isInvalid={authFailed}
                     />
-                    <Form.Control.Feedback type="invalid">{t('errors.login')}</Form.Control.Feedback>
+                    {authFailed && (
+                      <Form.Text className="text-danger">
+                        {t('errors.login')}
+                      </Form.Text>
+                    )}
                     {isNetworkError && (
                       <Form.Text className="text-danger">
-                        {`${t('errors.network')}!`}
+                        {t('errors.network')}
                       </Form.Text>
                     )}
                   </Form.Group>
