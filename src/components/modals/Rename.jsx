@@ -16,7 +16,9 @@ const Rename = ({ modalInfo, onHide }) => {
   const channels = useSelector((state) => state.channels);
   const channelNames = channels.map(({ name }) => name);
   const channelNameSchema = yup.object().shape({
-    name: yup.string().required(t('errors.required')).notOneOf(channelNames, t('errors.channelName')),
+    name: yup.string()
+      .required(t('errors.required'))
+      .notOneOf(channelNames, t('errors.channelName')),
   });
 
   const inputField = useRef(null);
@@ -36,7 +38,7 @@ const Rename = ({ modalInfo, onHide }) => {
           initialStatus={{ networkError: false }}
           validationSchema={channelNameSchema}
           validateOnBlur={false}
-          onSubmit={({ name }, { setSubmitting, resetForm, setStatus }) => {
+          onSubmit={({ name }, { resetForm, setStatus }) => {
             try {
               renameChannelSocketWrapper({ name, id: channelId });
               setStatus({ networkError: false });
@@ -45,7 +47,6 @@ const Rename = ({ modalInfo, onHide }) => {
             } catch (error) {
               setStatus({ networkError: true });
             }
-            setSubmitting(false);
           }}
         >
           {({

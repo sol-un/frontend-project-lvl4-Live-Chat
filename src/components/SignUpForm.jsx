@@ -16,13 +16,20 @@ const SignUpForm = () => {
   const inputRef = useRef();
 
   const SignupSchema = yup.object().shape({
-    username: yup.string().required(t('errors.required')).min(3, `${t('errors.signup.username')}!`).max(20, `${t('errors.signup.username')}!`),
-    password: yup.string().required(t('errors.required')).min(6, `${t('errors.signup.password')}!`),
-    confirmPassword: yup.string().required(t('errors.required')).test(
-      'passwordNotConfirmed',
-      `${t('errors.signup.confirmPassword')}!`,
-      (value, context) => value === context.parent.password,
-    ),
+    username: yup.string()
+      .required(t('errors.required'))
+      .min(3, `${t('errors.signup.username')}!`)
+      .max(20, `${t('errors.signup.username')}!`),
+    password: yup.string()
+      .required(t('errors.required'))
+      .min(6, `${t('errors.signup.password')}!`),
+    confirmPassword: yup.string()
+      .required(t('errors.required'))
+      .test(
+        'passwordNotConfirmed',
+        `${t('errors.signup.confirmPassword')}!`,
+        (value, context) => value === context.parent.password,
+      ),
   });
 
   useEffect(() => {
@@ -41,8 +48,7 @@ const SignUpForm = () => {
             }}
             initialStatus={{ networkError: false }}
             validationSchema={SignupSchema}
-            onSubmit={async (values, { setSubmitting, setStatus }) => {
-              setSubmitting(false);
+            onSubmit={async (values, { setStatus }) => {
               setAuthFailed(false);
               try {
                 const res = await axios.post(routes.signUpPath(), values);
@@ -59,13 +65,12 @@ const SignUpForm = () => {
                   setStatus({ networkError: true });
                   return;
                 }
-                if (err.isAxiosError && err.response.status === 409) {
-                  setStatus({ networkError: false });
-                  setAuthFailed(true);
-                  inputRef.current.select();
-                  return;
+                if (!err.isAxiosError || !err.response.status === 409) {
+                  throw err;
                 }
-                throw err;
+                setStatus({ networkError: false });
+                setAuthFailed(true);
+                inputRef.current.select();
               }
             }}
           >

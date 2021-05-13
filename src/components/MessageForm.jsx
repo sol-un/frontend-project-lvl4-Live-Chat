@@ -32,7 +32,7 @@ const MessageForm = () => {
       initialStatus={{ networkError: false }}
       validationSchema={messageSchema}
       validateOnBlur={false}
-      onSubmit={({ message }, { setSubmitting, resetForm, setStatus }) => {
+      onSubmit={({ message }, { resetForm, setStatus }) => {
         try {
           sendMessageSocketWrapper({ username, message, channelId: currentChannelId });
           setStatus({ networkError: false });
@@ -40,7 +40,6 @@ const MessageForm = () => {
         } catch (error) {
           setStatus({ networkError: true });
         }
-        setSubmitting(false);
       }}
     >
       {(props) => {

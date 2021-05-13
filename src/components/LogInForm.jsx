@@ -29,8 +29,7 @@ const LogInForm = () => {
               password: '',
             }}
             initialStatus={{ networkError: false }}
-            onSubmit={async (values, { setSubmitting, setStatus }) => {
-              setSubmitting(false);
+            onSubmit={async (values, { setStatus }) => {
               setAuthFailed(false);
               try {
                 const res = await axios.post(routes.loginPath(), values);
@@ -47,13 +46,12 @@ const LogInForm = () => {
                   setStatus({ networkError: true });
                   return;
                 }
-                if (err.isAxiosError && err.response.status === 401) {
-                  setStatus({ networkError: false });
-                  setAuthFailed(true);
-                  inputRef.current.select();
-                  return;
+                if (!err.isAxiosError || !err.response.status === 401) {
+                  throw err;
                 }
-                throw err;
+                setStatus({ networkError: false });
+                setAuthFailed(true);
+                inputRef.current.select();
               }
             }}
           >

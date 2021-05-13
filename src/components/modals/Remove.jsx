@@ -33,7 +33,7 @@ const Remove = ({ modalInfo, onHide }) => {
         <Formik
           initialValues={{}}
           initialStatus={{ networkError: false }}
-          onSubmit={(_values, { setSubmitting, setStatus }) => {
+          onSubmit={(_values, { setStatus }) => {
             try {
               removeChannelSocketWrapper({ id: channelId });
               setStatus({ networkError: false });
@@ -41,7 +41,6 @@ const Remove = ({ modalInfo, onHide }) => {
             } catch (error) {
               setStatus({ networkError: true });
             }
-            setSubmitting(false);
           }}
         >
           {({

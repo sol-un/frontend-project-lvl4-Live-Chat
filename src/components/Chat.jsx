@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
   Row, Col,
 } from 'react-bootstrap';
@@ -17,6 +18,7 @@ import { useAuth } from '../hooks/index.jsx';
 const Chat = () => {
   const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
   const uiState = useSelector((state) => state.uiState);
   const onHide = () => dispatch(hideModal());
   const auth = useAuth();
@@ -33,9 +35,11 @@ const Chat = () => {
     };
     try {
       getData();
-    } catch (error) {
-      console.error(error);
-      throw error;
+    } catch (err) {
+      if (!err.isAxiosError || !err.response.status === 401) {
+        throw err;
+      }
+      history.push('/login');
     }
   }, [dispatch]);
   return isLoaded
