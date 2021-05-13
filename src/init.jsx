@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-
 import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -10,7 +8,11 @@ import ru from './locales/ru.js';
 import en from './locales/en.js';
 import App from './App.jsx';
 import messagesReducer, { addMessage } from './slices/messages.js';
-import channelsReducer, { addChannel, renameChannel, removeChannel } from './slices/channels.js';
+import channelsReducer, {
+  addChannel as addChannelAction,
+  renameChannel as renameChannelAction,
+  removeChannel as removeChannelAction,
+} from './slices/channels.js';
 import currentChannelIdReducer from './slices/currentChannelId.js';
 import uiStateReducer from './slices/uiState.js';
 import { socketContext } from './contexts/index.jsx';
@@ -40,44 +42,25 @@ const init = (socket) => {
   const { dispatch } = store;
 
   const SocketProvider = ({ children }) => {
-    const sendMessageSocketWrapper = (data) => {
+    const wrapper = (event, data) => {
       if (socket.connected) {
-        socket.emit('newMessage', data, noop);
+        socket.emit(event, data, noop);
       } else {
         throw new Error('Network error!');
       }
     };
 
-    const addChannelSocketWrapper = (data) => {
-      if (socket.connected) {
-        socket.emit('newChannel', data, noop);
-      } else {
-        throw new Error('Network error!');
-      }
-    };
-
-    const removeChannelSocketWrapper = (data) => {
-      if (socket.connected) {
-        socket.emit('removeChannel', data, noop);
-      } else {
-        throw new Error('Network error!');
-      }
-    };
-
-    const renameChannelSocketWrapper = (data) => {
-      if (socket.connected) {
-        socket.emit('renameChannel', data, noop);
-      } else {
-        throw new Error('Network error!');
-      }
-    };
+    const sendMessage = (data) => wrapper('newMessage', data);
+    const addChannel = (data) => wrapper('newChannel', data);
+    const removeChannel = (data) => wrapper('removeChannel', data);
+    const renameChannel = (data) => wrapper('renameChannel', data);
 
     return (
       <socketContext.Provider value={{
-        sendMessageSocketWrapper,
-        addChannelSocketWrapper,
-        removeChannelSocketWrapper,
-        renameChannelSocketWrapper,
+        sendMessage,
+        addChannel,
+        removeChannel,
+        renameChannel,
       }}
       >
         {children}
@@ -86,9 +69,9 @@ const init = (socket) => {
   };
 
   socket.on('newMessage', (response) => dispatch(addMessage(response)));
-  socket.on('newChannel', (response) => dispatch(addChannel(response)));
-  socket.on('renameChannel', (response) => dispatch(renameChannel(response)));
-  socket.on('removeChannel', (response) => dispatch(removeChannel(response)));
+  socket.on('newChannel', (response) => dispatch(addChannelAction(response)));
+  socket.on('renameChannel', (response) => dispatch(renameChannelAction(response)));
+  socket.on('removeChannel', (response) => dispatch(removeChannelAction(response)));
 
   return (
     <Provider store={store}>

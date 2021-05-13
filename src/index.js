@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
 // @ts-check
 
 import 'regenerator-runtime/runtime.js';

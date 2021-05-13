@@ -8,7 +8,7 @@ import { useSocket } from '../../hooks/index.jsx';
 
 const Remove = ({ modalInfo, onHide }) => {
   const { t } = useTranslation();
-  const { removeChannelSocketWrapper } = useSocket();
+  const { removeChannel } = useSocket();
 
   const { channelId, channelName } = modalInfo;
   const cancelButton = useRef(null);
@@ -35,7 +35,7 @@ const Remove = ({ modalInfo, onHide }) => {
           initialStatus={{ networkError: false }}
           onSubmit={(_values, { setStatus }) => {
             try {
-              removeChannelSocketWrapper({ id: channelId });
+              removeChannel({ id: channelId });
               setStatus({ networkError: false });
               onHide();
             } catch (error) {
