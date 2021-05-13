@@ -39,16 +39,46 @@ const init = (socket) => {
   const { dispatch } = store;
 
   const SocketProvider = ({ children }) => {
-    const emitSocketEvent = (event, data) => {
+    const sendMessageSocketWrapper = (data) => {
       if (socket.connected) {
-        socket.emit(event, data, () => {});
+        socket.emit('newMessage', data, () => {});
+      } else {
+        throw new Error('Network error!');
+      }
+    };
+
+    const addChannelSocketWrapper = (data) => {
+      if (socket.connected) {
+        socket.emit('newChannel', data, () => {});
+      } else {
+        throw new Error('Network error!');
+      }
+    };
+
+    const removeChannelSocketWrapper = (data) => {
+      if (socket.connected) {
+        socket.emit('removeChannel', data, () => {});
+      } else {
+        throw new Error('Network error!');
+      }
+    };
+
+    const renameChannelSocketWrapper = (data) => {
+      if (socket.connected) {
+        socket.emit('renameChannel', data, () => {});
       } else {
         throw new Error('Network error!');
       }
     };
 
     return (
-      <socketContext.Provider value={emitSocketEvent}>
+      <socketContext.Provider value={{
+        sendMessageSocketWrapper,
+        addChannelSocketWrapper,
+        removeChannelSocketWrapper,
+        renameChannelSocketWrapper,
+      }}
+      >
         {children}
       </socketContext.Provider>
     );
