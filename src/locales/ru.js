@@ -16,7 +16,7 @@ export default {
       adding: {
         header: 'Добавить канал',
         placeholder: 'Введите имя канала',
-        create: 'Отправить',
+        button: 'Отправить',
       },
       removing: {
         header: 'Удалить канал',
@@ -30,7 +30,7 @@ export default {
       renaming: {
         header: 'Переименовать \'{{channelName}}\'',
         placeholder: 'Enter a new name for \'{{channelName}}\'',
-        rename: 'Отправить',
+        button: 'Отправить',
       },
     },
     errors: {

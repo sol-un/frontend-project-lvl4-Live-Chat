@@ -15,9 +15,13 @@ const ChannelNav = () => {
 
   const handleCurrentChannelChange = (id) => () => dispatch(changeCurrentChannelId(id));
 
-  const handleNewChannelModal = () => dispatch(showModal({ type: 'adding' }));
-  const handleRenameChannelModal = (channelId, channelName) => () => dispatch(showModal({ type: 'renaming', channelId, channelName }));
-  const handleDeleteChannelModal = (channelId, channelName) => () => dispatch(showModal({ type: 'removing', channelId, channelName }));
+  const handleNewChannelModal = () => dispatch(showModal({ type: 'adding', isVisible: true }));
+  const handleRenameChannelModal = (channelId) => () => dispatch(showModal({
+    type: 'renaming', isVisible: true, channelId,
+  }));
+  const handleDeleteChannelModal = (channelId) => () => dispatch(showModal({
+    type: 'removing', isVisible: true, channelId,
+  }));
 
   return (
     <>
@@ -45,8 +49,8 @@ const ChannelNav = () => {
                   id="dropdown-split-basic"
                 />
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={handleRenameChannelModal(id, name)}>Rename</Dropdown.Item>
-                  <Dropdown.Item onClick={handleDeleteChannelModal(id, name)}>Delete</Dropdown.Item>
+                  <Dropdown.Item onClick={handleRenameChannelModal(id)}>Rename</Dropdown.Item>
+                  <Dropdown.Item onClick={handleDeleteChannelModal(id)}>Delete</Dropdown.Item>
                 </Dropdown.Menu>
               </>
             )}

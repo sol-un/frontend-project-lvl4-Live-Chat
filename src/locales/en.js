@@ -16,7 +16,7 @@ export default {
       adding: {
         header: 'Add channel',
         placeholder: 'Enter channel name',
-        create: 'Create',
+        button: 'Create',
       },
       removing: {
         header: 'Remove \'{{channelName}}\'',
@@ -30,7 +30,7 @@ export default {
       renaming: {
         header: 'Rename \'{{channelName}}\'',
         placeholder: 'Enter a new name for \'{{channelName}}\'',
-        rename: 'Rename',
+        button: 'Rename',
       },
     },
     errors: {

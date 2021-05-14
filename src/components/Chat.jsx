@@ -11,7 +11,7 @@ import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 import { setInitialData } from '../slices/channels.js';
 import { hideModal } from '../slices/uiState.js';
-import Modal from './modals/Modal.jsx';
+import Modal from './Modal.jsx';
 import routes from '../routes.js';
 import { useAuth } from '../hooks/index.jsx';
 

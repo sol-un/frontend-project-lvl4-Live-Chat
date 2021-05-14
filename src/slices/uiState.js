@@ -4,8 +4,8 @@ const uiStateSlice = createSlice({
   name: 'uiState',
   initialState: {
     type: null,
+    isVisible: false,
     channelId: null,
-    channelName: null,
   },
   reducers: {
     showModal(state, action) {
@@ -14,8 +14,8 @@ const uiStateSlice = createSlice({
     hideModal() {
       return {
         type: null,
+        isVisible: false,
         channelId: null,
-        channelName: null,
       };
     },
   },
