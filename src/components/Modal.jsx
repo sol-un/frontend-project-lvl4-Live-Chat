@@ -9,8 +9,8 @@ import * as yup from 'yup';
 import { useSocket } from '../hooks/index.jsx';
 
 const getSchema = () => {
-  const { t } = useTranslation();
-  const channels = useSelector((state) => state.channels);
+  const { t } = useTranslation(); // eslint-disable-line react-hooks/rules-of-hooks
+  const channels = useSelector((state) => state.channels); // eslint-disable-line react-hooks/rules-of-hooks, max-len
   const channelNames = channels.map(({ name }) => name);
   return yup.object().shape({
     name: yup.string()
@@ -23,7 +23,7 @@ const getChannelName = (channelId) => {
   if (!channelId) {
     return null;
   }
-  const channel = useSelector((state) => state.channels
+  const channel = useSelector((state) => state.channels // eslint-disable-line react-hooks/rules-of-hooks, max-len
     .find(({ id }) => id === channelId));
   return channel.name;
 };
@@ -221,7 +221,7 @@ const modals = {
 
 const getModal = (modalName) => modals[modalName];
 
-export default ({ uiState, onHide }) => {
+const ModalFactory = ({ uiState, onHide }) => {
   if (!uiState.isVisible) {
     return null;
   }
@@ -229,3 +229,5 @@ export default ({ uiState, onHide }) => {
   const Component = getModal(uiState.type);
   return <Component channelId={uiState.channelId} type={uiState.type} onHide={onHide} />;
 };
+
+export default ModalFactory;

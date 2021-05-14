@@ -41,7 +41,7 @@ const Chat = () => {
       }
       history.push('/login');
     }
-  }, [dispatch]);
+  }, [auth, dispatch, history]);
   return isLoaded
     ? (
       <>
