@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Modal, Form, Button, InputGroup,
 } from 'react-bootstrap';
@@ -7,146 +7,132 @@ import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSocket } from '../hooks/index.jsx';
-
-const getSchema = () => {
-  const { t } = useTranslation(); // eslint-disable-line react-hooks/rules-of-hooks
-  const channels = useSelector((state) => state.channels); // eslint-disable-line react-hooks/rules-of-hooks, max-len
-  const channelNames = channels.map(({ name }) => name);
-  return yup.object().shape({
-    name: yup.string()
-      .required(t('errors.required'))
-      .notOneOf(channelNames, t('errors.channelName')),
-  });
-};
-
-const getChannelName = (channelId) => {
-  if (!channelId) {
-    return null;
-  }
-  const channel = useSelector((state) => state.channels // eslint-disable-line react-hooks/rules-of-hooks, max-len
-    .find(({ id }) => id === channelId));
-  return channel.name;
-};
+import { hideModal } from '../slices/uiState.js';
 
 const ModalHeader = ({ channelId, type, onHide }) => {
   const { t } = useTranslation();
+
+  const { name: channelName } = useSelector(({ channels }) => channels
+    .find(({ id }) => id === channelId)) || { name: null };
+
   return (
     <Modal.Header closeButton onHide={onHide}>
       <Modal.Title>
-        {t(`modals.${type}.header`, { channelName: getChannelName(channelId) })}
+        {t(`modals.${type}.header`, { channelName })}
       </Modal.Title>
     </Modal.Header>
   );
 };
 
 const ModalForm = ({
-  type, event, onHide, inputField, channelId,
+  type, event, onHide, channelId,
 }) => {
   const { t } = useTranslation();
-  const channelName = getChannelName(channelId);
+
+  const inputField = useRef(null);
+  useEffect(() => inputField.current.focus());
+
+  const channelNames = useSelector((state) => state.channels
+    .map(({ name }) => name));
+  const channelNameSchema = yup.object().shape({
+    name: yup.string()
+      .required(t('errors.required'))
+      .notOneOf(channelNames, t('errors.channelName')),
+  });
+
+  const { name: channelName } = useSelector(({ channels }) => channels
+    .find(({ id }) => id === channelId)) || { name: null };
+
   return (
-    <Formik
-      initialValues={{ name: channelName || '' }}
-      initialStatus={{ networkError: false }}
-      validationSchema={getSchema()}
-      validateOnBlur={false}
-      onSubmit={({ name }, { resetForm, setStatus }) => {
-        try {
-          event({ name, id: channelId });
-          setStatus({ networkError: false });
-          onHide();
-          resetForm();
-        } catch (error) {
-          setStatus({ networkError: true });
-        }
-      }}
-    >
-      {({
-        values,
-        errors,
-        status,
-        isSubmitting,
-        isValid,
-        handleChange,
-        handleSubmit,
-        handleBlur,
-      }) => {
-        const isNetworkError = status.networkError;
-        return (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <InputGroup>
-                <Form.Label htmlFor="name" srOnly>{t(`modals.${type}.placeholder`, { channelName })}</Form.Label>
-                <Form.Control
-                  ref={inputField}
-                  id="name"
-                  type="text"
-                  className="mr-2"
-                  placeholder={t(`modals.${type}.placeholder`, { channelName })}
-                  value={values.name}
-                  isInvalid={isNetworkError}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  data-testid="add-channel"
-                />
-                <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
-                  {t(`modals.${type}.button`)}
-                </Button>
-              </InputGroup>
-              {errors.name && (
-                <Form.Text className="text-muted">
-                  {errors.name}
-                </Form.Text>
-              )}
-              {isNetworkError && (
-                <Form.Text className="text-danger">
-                  {t('errors.network')}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Form>
-        );
-      }}
-    </Formik>
+    <>
+      <ModalHeader {...{ channelId, type, onHide }} />
+      <Modal.Body>
+        <Formik
+          initialValues={{ name: channelName || '' }}
+          initialStatus={{ networkError: false }}
+          validationSchema={channelNameSchema}
+          validateOnBlur={false}
+          onSubmit={({ name }, { resetForm, setStatus }) => {
+            try {
+              event({ name, id: channelId });
+              setStatus({ networkError: false });
+              onHide();
+              resetForm();
+            } catch (error) {
+              setStatus({ networkError: true });
+            }
+          }}
+        >
+          {({
+            values,
+            errors,
+            status,
+            isSubmitting,
+            isValid,
+            handleChange,
+            handleSubmit,
+            handleBlur,
+          }) => {
+            const isNetworkError = status.networkError;
+            return (
+              <Form onSubmit={handleSubmit}>
+                <Form.Group>
+                  <InputGroup>
+                    <Form.Label htmlFor="name" srOnly>{t(`modals.${type}.placeholder`, { channelName })}</Form.Label>
+                    <Form.Control
+                      ref={inputField}
+                      id="name"
+                      type="text"
+                      className="mr-2"
+                      placeholder={t(`modals.${type}.placeholder`, { channelName })}
+                      value={values.name}
+                      isInvalid={isNetworkError}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      data-testid="add-channel"
+                    />
+                    <Button variant="primary" type="submit" disabled={!isValid || isSubmitting}>
+                      {t(`modals.${type}.button`)}
+                    </Button>
+                  </InputGroup>
+                  {errors.name && (
+                    <Form.Text className="text-muted">
+                      {errors.name}
+                    </Form.Text>
+                  )}
+                  {isNetworkError && (
+                    <Form.Text className="text-danger">
+                      {t('errors.network')}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+              </Form>
+            );
+          }}
+        </Formik>
+      </Modal.Body>
+    </>
   );
 };
 
-const Add = ({ channelId, type, onHide }) => {
+const Add = ({ type, onHide }) => {
   const { addChannel } = useSocket();
-  const inputField = useRef(null);
   return (
-    <Modal
-      show
-      onEntered={() => inputField.current.focus()}
-      onHide={onHide}
-    >
-      {ModalHeader({ channelId, type, onHide })}
-      <Modal.Body>
-        {ModalForm({
-          type, event: addChannel, onHide, inputField, channelId,
-        })}
-      </Modal.Body>
-    </Modal>
+    <ModalForm {...{
+      type, event: addChannel, onHide,
+    }}
+    />
   );
 };
 
 const Rename = ({ channelId, type, onHide }) => {
   const { renameChannel } = useSocket();
 
-  const inputField = useRef(null);
   return (
-    <Modal
-      show
-      onEntered={() => inputField.current.focus()}
-      onHide={onHide}
-    >
-      {ModalHeader({ channelId, type, onHide })}
-      <Modal.Body>
-        {ModalForm({
-          type, event: renameChannel, onHide, inputField, channelId,
-        })}
-      </Modal.Body>
-    </Modal>
+    <ModalForm {...{
+      type, event: renameChannel, onHide, channelId,
+    }}
+    />
   );
 };
 
@@ -154,15 +140,15 @@ const Remove = ({ channelId, type, onHide }) => {
   const { t } = useTranslation();
   const { removeChannel } = useSocket();
 
-  const channelName = getChannelName(channelId);
+  const { name: channelName } = useSelector(({ channels }) => channels
+    .find(({ id }) => id === channelId)) || { name: null };
+
   const cancelButton = useRef(null);
+  useEffect(() => cancelButton.current.focus());
+
   return (
-    <Modal
-      show
-      onEntered={() => cancelButton.current.focus()}
-      onHide={onHide}
-    >
-      {ModalHeader({ channelId, type, onHide })}
+    <>
+      <ModalHeader {...{ channelId, type, onHide }} />
       <Modal.Body>
         <p className="text-center mb-2">
           {t('modals.removing.body.line1', { channelName })}
@@ -209,7 +195,7 @@ const Remove = ({ channelId, type, onHide }) => {
           }}
         </Formik>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 
@@ -219,15 +205,25 @@ const modals = {
   renaming: Rename,
 };
 
-const getModal = (modalName) => modals[modalName];
+const ModalFactory = () => {
+  const { isVisible, type, channelId } = useSelector((state) => state.uiState);
+  const dispatch = useDispatch();
 
-const ModalFactory = ({ uiState, onHide }) => {
-  if (!uiState.isVisible) {
+  if (!isVisible) {
     return null;
   }
 
-  const Component = getModal(uiState.type);
-  return <Component channelId={uiState.channelId} type={uiState.type} onHide={onHide} />;
+  const onHide = () => dispatch(hideModal());
+
+  const Component = modals[type];
+  return (
+    <Modal
+      show
+      onHide={onHide}
+    >
+      <Component {...{ channelId, type, onHide }} />
+    </Modal>
+  );
 };
 
 export default ModalFactory;

@@ -3,7 +3,7 @@
 
 This is a simple live chat app developed as a pet project under the guidance of Hexlet, a self-education platform. [Read more about Hexlet (in Russian)](https://ru.hexlet.io/pages/about?utm_source=github&utm_medium=link&utm_campaign=nodejs-package).
 
-The app is available here: https://thawing-plateau-94503.herokuapp.com/login
+The app is available here: https://thawing-plateau-94503.herokuapp.com
 
 - **username**: admin
 - **password**: admin

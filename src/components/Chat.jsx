@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
   Row, Col,
@@ -10,7 +10,7 @@ import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 import { setInitialData } from '../slices/channels.js';
-import { hideModal } from '../slices/uiState.js';
+
 import Modal from './Modal.jsx';
 import routes from '../routes.js';
 import { useAuth } from '../hooks/index.jsx';
@@ -19,8 +19,7 @@ const Chat = () => {
   const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-  const uiState = useSelector((state) => state.uiState);
-  const onHide = () => dispatch(hideModal());
+
   const auth = useAuth();
   useEffect(() => {
     const authHeader = auth.getAuthHeader();
@@ -42,10 +41,11 @@ const Chat = () => {
       history.push('/login');
     }
   }, [auth, dispatch, history]);
+
   return isLoaded
     ? (
       <>
-        <Modal uiState={uiState} onHide={onHide} />
+        <Modal />
         <Row className="flex-grow-1 h-75 pb-3">
           <Col className="border-right" xs={3}>
             <ChannelNav />
