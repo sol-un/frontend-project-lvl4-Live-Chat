@@ -10,6 +10,8 @@ export default {
     confirmPassword: 'Confirm Password',
     noAccount: 'Don\'t have an account?',
     channels: 'Channels',
+    rename: 'Rename',
+    delete: 'Delete',
     message: 'Your message',
     send: 'Send',
     modals: {

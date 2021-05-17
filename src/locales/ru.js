@@ -10,6 +10,8 @@ export default {
     confirmPassword: 'Подтвердите пароль',
     noAccount: 'Нет аккаунта?',
     channels: 'Каналы',
+    rename: 'Переименовать',
+    delete: 'Удалить',
     message: 'Ваше сообщение',
     send: 'Отправить',
     modals: {

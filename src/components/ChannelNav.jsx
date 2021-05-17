@@ -49,8 +49,8 @@ const ChannelNav = () => {
                   id="dropdown-split-basic"
                 />
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={handleRenameChannelModal(id)}>Rename</Dropdown.Item>
-                  <Dropdown.Item onClick={handleDeleteChannelModal(id)}>Delete</Dropdown.Item>
+                  <Dropdown.Item onClick={handleRenameChannelModal(id)}>{t('rename')}</Dropdown.Item>
+                  <Dropdown.Item onClick={handleDeleteChannelModal(id)}>{t('delete')}</Dropdown.Item>
                 </Dropdown.Menu>
               </>
             )}
