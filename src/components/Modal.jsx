@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { useSocket } from '../hooks/index.jsx';
 import { hideModal } from '../slices/uiState.js';
 
-const selectChannelNameById = (state, channelId) => state.channels
+const selectChannelNameById = (channelId) => (state) => state.channels
   .find(({ id }) => id === channelId)
   ?.name;
 
@@ -41,7 +41,7 @@ const ModalForm = ({
       .notOneOf(channelNames, t('errors.channelName')),
   });
 
-  const channelName = useSelector((state) => selectChannelNameById(state, channelId));
+  const channelName = useSelector(selectChannelNameById(channelId));
 
   return (
     <>
@@ -140,7 +140,7 @@ const Remove = ({ channelId, type, onHide }) => {
   const { t } = useTranslation();
   const { removeChannel } = useSocket();
 
-  const channelName = useSelector((state) => selectChannelNameById(state, channelId));
+  const channelName = useSelector(selectChannelNameById(channelId));
 
   const cancelButton = useRef(null);
   useEffect(() => cancelButton.current.focus());
