@@ -13,11 +13,6 @@
     "build": "NODE_ENV=production npx webpack --mode production",
     "start": "node bin/slack.js"
   },
-  "jest": {
-    "moduleNameMapper": {
-      "\\.(css|scss)$": "identity-obj-proxy"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"

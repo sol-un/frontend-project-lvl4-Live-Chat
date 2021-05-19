@@ -9,11 +9,12 @@ import * as yup from 'yup';
 import { useSocket } from '../hooks/index.jsx';
 import { hideModal } from '../slices/uiState.js';
 
-const ModalHeader = ({ channelId, type, onHide }) => {
-  const { t } = useTranslation();
+const selectChannelNameById = (state, channelId) => state.channels
+  .find(({ id }) => id === channelId)
+  ?.name;
 
-  const { name: channelName } = useSelector(({ channels }) => channels
-    .find(({ id }) => id === channelId)) || { name: null };
+const ModalHeader = ({ channelName, type, onHide }) => {
+  const { t } = useTranslation();
 
   return (
     <Modal.Header closeButton onHide={onHide}>
@@ -40,12 +41,11 @@ const ModalForm = ({
       .notOneOf(channelNames, t('errors.channelName')),
   });
 
-  const { name: channelName } = useSelector(({ channels }) => channels
-    .find(({ id }) => id === channelId)) || { name: null };
+  const channelName = useSelector((state) => selectChannelNameById(state, channelId));
 
   return (
     <>
-      <ModalHeader {...{ channelId, type, onHide }} />
+      <ModalHeader {...{ channelName, type, onHide }} />
       <Modal.Body>
         <Formik
           initialValues={{ name: channelName || '' }}
@@ -140,15 +140,14 @@ const Remove = ({ channelId, type, onHide }) => {
   const { t } = useTranslation();
   const { removeChannel } = useSocket();
 
-  const { name: channelName } = useSelector(({ channels }) => channels
-    .find(({ id }) => id === channelId)) || { name: null };
+  const channelName = useSelector((state) => selectChannelNameById(state, channelId));
 
   const cancelButton = useRef(null);
   useEffect(() => cancelButton.current.focus());
 
   return (
     <>
-      <ModalHeader {...{ channelId, type, onHide }} />
+      <ModalHeader {...{ channelName, type, onHide }} />
       <Modal.Body>
         <p className="text-center mb-2">
           {t('modals.removing.body.line1', { channelName })}
@@ -209,7 +208,7 @@ const ModalFactory = () => {
   const { isVisible, type, channelId } = useSelector((state) => state.uiState);
   const dispatch = useDispatch();
 
-  if (!isVisible) {
+  if (!type) {
     return null;
   }
 
@@ -218,7 +217,7 @@ const ModalFactory = () => {
   const Component = modals[type];
   return (
     <Modal
-      show
+      show={isVisible}
       onHide={onHide}
     >
       <Component {...{ channelId, type, onHide }} />
