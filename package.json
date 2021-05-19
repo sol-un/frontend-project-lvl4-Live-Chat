@@ -31,7 +31,6 @@
     "bootstrap": "^4.6.0",
     "core-js": "^3.10.1",
     "debug": "^4.3.1",
-    "dotenv": "^8.2.0",
     "fastify": "^3.14.2",
     "fastify-jwt": "^2.4.0",
     "fastify-socket.io": "^1.0.2",
