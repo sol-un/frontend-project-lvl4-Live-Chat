@@ -15,12 +15,12 @@ const ChannelNav = () => {
 
   const handleCurrentChannelChange = (id) => () => dispatch(changeCurrentChannelId(id));
 
-  const handleNewChannelModal = () => dispatch(showModal({ type: 'adding', isVisible: true }));
+  const handleNewChannelModal = () => dispatch(showModal({ type: 'adding' }));
   const handleRenameChannelModal = (channelId) => () => dispatch(showModal({
-    type: 'renaming', isVisible: true, channelId,
+    type: 'renaming', channelId,
   }));
   const handleDeleteChannelModal = (channelId) => () => dispatch(showModal({
-    type: 'removing', isVisible: true, channelId,
+    type: 'removing', channelId,
   }));
 
   return (

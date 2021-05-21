@@ -9,7 +9,11 @@ const uiStateSlice = createSlice({
   },
   reducers: {
     showModal(state, action) {
-      return { ...state, ...action.payload };
+      return {
+        ...state,
+        ...action.payload,
+        isVisible: true,
+      };
     },
     hideModal() {
       return {

@@ -17,7 +17,7 @@ import currentChannelIdReducer from './slices/currentChannelId.js';
 import uiStateReducer from './slices/uiState.js';
 import { socketContext } from './contexts/index.jsx';
 
-const init = (socket) => {
+const init = async (socket) => {
   const i18nextInstance = i18next.createInstance();
   i18nextInstance
     .use(initReactI18next)

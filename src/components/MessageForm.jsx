@@ -70,7 +70,6 @@ const MessageForm = () => {
                   disabled={isSubmitting}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  aria-label="body"
                   data-testid="new-message"
                 />
                 <InputGroup.Append>
@@ -78,7 +77,6 @@ const MessageForm = () => {
                     variant="primary"
                     type="submit"
                     disabled={!isValid || isSubmitting}
-                    aria-label="отправить"
                   >
                     {t('send')}
                   </Button>

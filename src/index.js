@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const socket = io();
 
-const app = init(socket);
-
-const container = document.querySelector('#chat');
-ReactDOM.render(app, container);
+init(socket).then((app) => {
+  const container = document.querySelector('#chat');
+  ReactDOM.render(app, container);
+});
