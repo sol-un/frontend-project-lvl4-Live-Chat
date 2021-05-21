@@ -9,7 +9,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
-import { setInitialData } from '../slices/channels.js';
+import { setInitialData } from '../slices/channelsInfo.js';
 
 import Modal from './Modal.jsx';
 import routes from '../routes.js';

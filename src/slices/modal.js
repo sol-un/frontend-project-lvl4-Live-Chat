@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const uiStateSlice = createSlice({
-  name: 'uiState',
+const modalSlice = createSlice({
+  name: 'modal',
   initialState: {
     type: null,
     isVisible: false,
@@ -25,6 +25,6 @@ const uiStateSlice = createSlice({
   },
 });
 
-const { actions, reducer } = uiStateSlice;
+const { actions, reducer } = modalSlice;
 export const { showModal, hideModal } = actions;
 export default reducer;

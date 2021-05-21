@@ -4,16 +4,16 @@ import {
   Nav, NavLink, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { changeCurrentChannelId } from '../slices/currentChannelId.js';
-import { showModal } from '../slices/uiState.js';
+import { setCurrentChannelId } from '../slices/channelsInfo.js';
+import { showModal } from '../slices/modal.js';
 
 const ChannelNav = () => {
   const { t } = useTranslation();
-  const channels = useSelector((state) => state.channels);
-  const currentChannelId = useSelector((state) => state.currentChannelId);
+  const channels = useSelector((state) => state.channelsInfo.channels);
+  const currentChannelId = useSelector((state) => state.channelsInfo.currentChannelId);
   const dispatch = useDispatch();
 
-  const handleCurrentChannelChange = (id) => () => dispatch(changeCurrentChannelId(id));
+  const handleCurrentChannelChange = (id) => () => dispatch(setCurrentChannelId(id));
 
   const handleNewChannelModal = () => dispatch(showModal({ type: 'adding' }));
   const handleRenameChannelModal = (channelId) => () => dispatch(showModal({

@@ -8,8 +8,8 @@ const Messages = () => {
     delay: 0,
     containerId: 'message-container',
   }), []);
-  const currentChannelId = useSelector((state) => state.currentChannelId);
-  const currentChannelMessages = useSelector((state) => state.messages
+  const currentChannelId = useSelector((state) => state.channelsInfo.currentChannelId);
+  const currentChannelMessages = useSelector((state) => state.messagesInfo.messages
     .filter(({ channelId }) => channelId === currentChannelId));
   return (
     <div id="message-container" className="overflow-auto mb-3">

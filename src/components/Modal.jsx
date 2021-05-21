@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSocket } from '../hooks/index.jsx';
-import { hideModal } from '../slices/uiState.js';
+import { hideModal } from '../slices/modal.js';
 
-const selectChannelNameById = (channelId) => (state) => state.channels
+const selectChannelNameById = (channelId) => (state) => state.channelsInfo.channels
   .find(({ id }) => id === channelId)
   ?.name;
 
@@ -33,7 +33,7 @@ const ModalForm = ({
   const inputField = useRef(null);
   useEffect(() => inputField.current.focus());
 
-  const channelNames = useSelector((state) => state.channels
+  const channelNames = useSelector((state) => state.channelsInfo.channels
     .map(({ name }) => name));
   const channelNameSchema = yup.object().shape({
     name: yup.string()
@@ -220,7 +220,7 @@ const modals = {
 };
 
 const ModalFactory = () => {
-  const { isVisible, type, channelId } = useSelector((state) => state.uiState);
+  const { isVisible, type, channelId } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
 
   if (!type) {

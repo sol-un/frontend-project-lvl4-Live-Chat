@@ -18,7 +18,7 @@ const MessageForm = () => {
   });
 
   const { username } = useContext(authContext);
-  const currentChannelId = useSelector((state) => state.currentChannelId);
+  const currentChannelId = useSelector((state) => state.channelsInfo.currentChannelId);
   const inputField = useRef(null);
 
   useEffect(

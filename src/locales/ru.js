@@ -31,7 +31,7 @@ export default {
       },
       renaming: {
         header: 'Переименовать \'{{channelName}}\'',
-        placeholder: 'Enter a new name for \'{{channelName}}\'',
+        placeholder: 'Введите новое имя для канала \'{{channelName}}\'',
         button: 'Отправить',
       },
     },

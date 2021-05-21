@@ -7,14 +7,13 @@ import { noop } from 'lodash';
 import ru from './locales/ru.js';
 import en from './locales/en.js';
 import App from './App.jsx';
-import messagesReducer, { addMessage } from './slices/messages.js';
-import channelsReducer, {
+import messagesInfoReducer, { addMessage } from './slices/messagesInfo.js';
+import channelsInfoReducer, {
   addChannel as addChannelAction,
   renameChannel as renameChannelAction,
   removeChannel as removeChannelAction,
-} from './slices/channels.js';
-import currentChannelIdReducer from './slices/currentChannelId.js';
-import uiStateReducer from './slices/uiState.js';
+} from './slices/channelsInfo.js';
+import modalReducer from './slices/modal.js';
 import { socketContext } from './contexts/index.jsx';
 
 const init = async (socket) => {
@@ -32,10 +31,9 @@ const init = async (socket) => {
 
   const store = configureStore({
     reducer: {
-      channels: channelsReducer,
-      messages: messagesReducer,
-      currentChannelId: currentChannelIdReducer,
-      uiState: uiStateReducer,
+      channelsInfo: channelsInfoReducer,
+      messagesInfo: messagesInfoReducer,
+      modal: modalReducer,
     },
   });
 
