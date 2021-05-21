@@ -95,6 +95,7 @@ const SignUpForm = () => {
                       name="username"
                       ref={inputRef}
                       isInvalid={authFailed || errors.username}
+                      disabled={isSubmitting}
                     />
                     {errors.username && <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>}
                   </Form.Group>
@@ -108,6 +109,7 @@ const SignUpForm = () => {
                       id="password"
                       name="password"
                       isInvalid={authFailed || errors.password}
+                      disabled={isSubmitting}
                     />
                     {errors.password && <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>}
                   </Form.Group>
@@ -121,6 +123,7 @@ const SignUpForm = () => {
                       id="confirmPassword"
                       name="confirmPassword"
                       isInvalid={authFailed || errors.confirmPassword}
+                      disabled={isSubmitting}
                     />
                     {errors.confirmPassword && <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>}
                   </Form.Group>

@@ -67,6 +67,7 @@ const MessageForm = () => {
                   autoComplete="off"
                   value={values.message}
                   isInvalid={isNetworkError}
+                  disabled={isSubmitting}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   aria-label="body"

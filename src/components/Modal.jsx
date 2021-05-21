@@ -87,6 +87,7 @@ const ModalForm = ({
                       placeholder={t(`modals.${type}.placeholder`, { channelName })}
                       value={values.name}
                       isInvalid={isNetworkError}
+                      disabled={isSubmitting}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       data-testid="add-channel"
@@ -178,8 +179,22 @@ const Remove = ({ channelId, type, onHide }) => {
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <InputGroup>
-                    <Button className="mx-auto" ref={cancelButton} variant="primary" onClick={onHide}>{t('modals.removing.cancel')}</Button>
-                    <Button className="mx-auto" variant="danger" type="submit" disabled={isSubmitting}>
+                    <Button
+                      className="mx-auto"
+                      ref={cancelButton}
+                      variant="primary"
+                      disabled={isSubmitting}
+                      onClick={onHide}
+                    >
+                      {t('modals.removing.cancel')}
+
+                    </Button>
+                    <Button
+                      className="mx-auto"
+                      variant="danger"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
                       {t('modals.removing.remove', { channelName })}
                     </Button>
                   </InputGroup>

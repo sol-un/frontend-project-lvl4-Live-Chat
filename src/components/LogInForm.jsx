@@ -71,6 +71,7 @@ const LogInForm = () => {
                       name="username"
                       ref={inputRef}
                       isInvalid={authFailed}
+                      disabled={isSubmitting}
                     />
                   </Form.Group>
                   <Form.Group>
@@ -82,6 +83,7 @@ const LogInForm = () => {
                       id="password"
                       name="password"
                       isInvalid={authFailed}
+                      disabled={isSubmitting}
                     />
                     {authFailed && (
                       <Form.Text className="text-danger">
