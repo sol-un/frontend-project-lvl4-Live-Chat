@@ -10,9 +10,9 @@ import ChannelNav from './ChannelNav.jsx';
 import Messages from './Messages.jsx';
 import MessageForm from './MessageForm.jsx';
 import { setInitialData } from '../slices/channelsInfo.js';
-
 import Modal from './Modal.jsx';
 import routes from '../routes.js';
+import pageRoutes from './routes.js';
 import { useAuth } from '../hooks/index.jsx';
 
 const Chat = () => {
@@ -32,14 +32,14 @@ const Chat = () => {
       dispatch(setInitialData(res.data));
       setLoaded(true);
     };
-    try {
-      getData();
-    } catch (err) {
-      if (!err.isAxiosError || !err.response.status === 401) {
-        throw err;
-      }
-      history.push('/login');
-    }
+    getData()
+      .catch((err) => {
+        if (!err.isAxiosError || !err.response.status === 401) {
+          throw err;
+        }
+        auth.logOut();
+        history.push(pageRoutes.logInPath());
+      });
   }, [auth, dispatch, history]);
 
   return isLoaded

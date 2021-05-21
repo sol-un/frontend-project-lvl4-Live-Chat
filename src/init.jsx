@@ -18,7 +18,7 @@ import { socketContext } from './contexts/index.jsx';
 
 const init = async (socket) => {
   const i18nextInstance = i18next.createInstance();
-  i18nextInstance
+  await i18nextInstance
     .use(initReactI18next)
     .init({
       resources: {

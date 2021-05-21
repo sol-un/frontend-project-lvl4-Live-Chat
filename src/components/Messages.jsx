@@ -3,14 +3,16 @@ import { useSelector } from 'react-redux';
 import { animateScroll } from 'react-scroll';
 
 const Messages = () => {
+  const currentChannelId = useSelector((state) => state.channelsInfo.currentChannelId);
+  const currentChannelMessages = useSelector((state) => state.messagesInfo.messages
+    .filter(({ channelId }) => channelId === currentChannelId));
+
   React.useEffect(() => animateScroll.scrollToBottom({
     duration: 0,
     delay: 0,
     containerId: 'message-container',
-  }), []);
-  const currentChannelId = useSelector((state) => state.channelsInfo.currentChannelId);
-  const currentChannelMessages = useSelector((state) => state.messagesInfo.messages
-    .filter(({ channelId }) => channelId === currentChannelId));
+  }), [currentChannelId, currentChannelMessages]);
+
   return (
     <div id="message-container" className="overflow-auto mb-3">
       {currentChannelMessages.map(({ id, username, message }) => (

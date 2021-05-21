@@ -6,6 +6,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
+import pageRoutes from './routes.js';
 
 const LogInForm = () => {
   const auth = useAuth();
@@ -106,7 +107,7 @@ const LogInForm = () => {
                   </Button>
                   <div className="d-flex flex-column align-items-center">
                     <span className="small mb-2">{t('noAccount')}</span>
-                    <Link to="/signup">{t('signupLink')}</Link>
+                    <Link to={pageRoutes.signUpPath()}>{t('signupLink')}</Link>
                   </div>
                 </Form>
               );

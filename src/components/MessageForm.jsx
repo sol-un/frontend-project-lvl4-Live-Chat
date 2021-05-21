@@ -37,6 +37,7 @@ const MessageForm = () => {
           sendMessage({ username, message, channelId: currentChannelId });
           setStatus({ networkError: false });
           resetForm();
+          inputField.current.focus();
         } catch (error) {
           setStatus({ networkError: true });
         }
