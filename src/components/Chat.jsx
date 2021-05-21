@@ -23,23 +23,24 @@ const Chat = () => {
   const auth = useAuth();
   useEffect(() => {
     const authHeader = auth.getAuthHeader();
-    const getData = async () => {
-      const res = await axios({
-        method: 'get',
-        url: routes.dataPath(),
-        headers: authHeader,
-      });
-      dispatch(setInitialData(res.data));
-      setLoaded(true);
-    };
-    getData()
-      .catch((err) => {
+    const fetchData = async () => {
+      try {
+        const res = await axios({
+          method: 'get',
+          url: routes.dataPath(),
+          headers: authHeader,
+        });
+        dispatch(setInitialData(res.data));
+        setLoaded(true);
+      } catch (err) {
         if (!err.isAxiosError || !err.response.status === 401) {
           throw err;
         }
         auth.logOut();
         history.push(pageRoutes.logInPath());
-      });
+      }
+    };
+    fetchData();
   }, [auth, dispatch, history]);
 
   return isLoaded
