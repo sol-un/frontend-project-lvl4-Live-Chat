@@ -1,3 +1,5 @@
+## Hexlet Chat
+
 ![(https://github.com/sol-un/frontend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/sol-un/frontend-project-lvl4/workflows/hexlet-check/badge.svg)
 ![(https://github.com/sol-un/frontend-project-lvl4/workflows/Node%20CI/badge.svg)](https://github.com/sol-un/frontend-project-lvl4/workflows/Node%20CI/badge.svg)
 
@@ -7,3 +9,16 @@ The app is available here: https://thawing-plateau-94503.herokuapp.com
 
 - **username**: admin
 - **password**: admin
+
+## Install
+
+```sh
+$ make install
+```
+
+## Run
+
+```sh
+$ make start
+# open http://localhost:5000
+```
